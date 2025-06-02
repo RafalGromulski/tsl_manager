@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?><TrustServiceStatusList xmlns="http://uri.etsi.org/02231/v2#" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns3="http://uri.etsi.org/02231/v2/additionaltypes#" xmlns:ns4="http://uri.etsi.org/01903/v1.3.2#" xmlns:ns5="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#" xmlns:ns6="http://uri.etsi.org/01903/v1.4.1#" Id="MT-TL-0001" TSLTag="http://uri.etsi.org/19612/TSLTag">
+    <SchemeInformation>
+        <TSLVersionIdentifier>5</TSLVersionIdentifier>
+        <TSLSequenceNumber>23</TSLSequenceNumber>
+        <TSLType>http://uri.etsi.org/TrstSvc/TrustedList/TSLType/EUgeneric</TSLType>
+        <SchemeOperatorName>
+            <Name xml:lang="en">Malta Communications Authority</Name>
+        </SchemeOperatorName>
+        <SchemeOperatorAddress>
+            <PostalAddresses>
+                <PostalAddress xml:lang="en">
+                    <StreetAddress>Valletta Waterfront, Pinto Wharf</StreetAddress>
+                    <Locality>Floriana</Locality>
+                    <PostalCode>FRN1913</PostalCode>
+                    <CountryName>MT</CountryName>
+                </PostalAddress>
+            </PostalAddresses>
+            <ElectronicAddress>
+                <URI xml:lang="en">mailto:info@mca.org.mt</URI>
+                <URI xml:lang="en">http://www.mca.org.mt</URI>
+            </ElectronicAddress>
+        </SchemeOperatorAddress>
+        <SchemeName>
+            <Name xml:lang="en">MT:Trusted list including information related to the qualified trust service providers which are supervised by the issuing Member State, together with information related to the qualified trust services provided by them, in accordance with the relevant provisions laid down in Regulation (EU) No 910/2014 of the European Parliament and of the Council of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</Name>
+        </SchemeName>
+        <SchemeInformationURI>
+            <URI xml:lang="en">https://www.mca.org.mt/general/trust-services-and-eid</URI>
+        </SchemeInformationURI>
+        <StatusDeterminationApproach>http://uri.etsi.org/TrstSvc/TrustedList/StatusDetn/EUappropriate</StatusDeterminationApproach>
+        <SchemeTypeCommunityRules>
+            <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/schemerules/EUcommon</URI>
+            <URI xml:lang="mt">http://uri.etsi.org/TrstSvc/TrustedList/schemerules/MT</URI>
+        </SchemeTypeCommunityRules>
+        <SchemeTerritory>MT</SchemeTerritory>
+        <PolicyOrLegalNotice>
+            <TSLLegalNotice xml:lang="en">The applicable legal framework for the present trusted list is Regulation (EU) No 910/2014 of the European Parliament and of the Council of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC.</TSLLegalNotice>
+        </PolicyOrLegalNotice>
+        <HistoricalInformationPeriod>65535</HistoricalInformationPeriod>
+        <PointersToOtherTSL>
+            <OtherTSLPointer>
+                <ServiceDigitalIdentities>
+                    <ServiceDigitalIdentity>
+                        <DigitalId>
+                            <X509Certificate>MIID/DCCAuSgAwIBAgIQEAAAAAAAWgS4SGkJJUcHdzANBgkqhkiG9w0BAQUFADAzMQswCQYDVQQGEwJCRTETMBEGA1UEAxMKQ2l0aXplbiBDQTEPMA0GA1UEBRMGMjAxMzA2MB4XDTEzMDcxNzE3NDQwOFoXDTE4MDcxMzIzNTk1OVowbjELMAkGA1UEBhMCQkUxITAfBgNVBAMTGFBpZXJyZSBEYW1hcyAoU2lnbmF0dXJlKTEOMAwGA1UEBBMFRGFtYXMxFjAUBgNVBCoMDVBpZXJyZSBBbmRyw6kxFDASBgNVBAUTCzYwMDIxMjExOTE5MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCMv+7DvhzLwG3prirUDGaYRS2+jBZtN2cYXuloKSqAc5Q58FEmk0gsZRF+/4dkt8hgCvbBcpmG6FcvTfNxQbxPX88yYwpBYsWnJ3aD5P4QrN2+fZxwxfXxRRcX+t30IBpr+WYFv/GhJhoFo0LWUehC4eyvnMfP4J/MR4TGlQRrcwIDAQABo4IBUzCCAU8wHwYDVR0jBBgwFoAUww/Dck0/3rI43jkuR2RQ//KP88cwbgYIKwYBBQUHAQEEYjBgMDYGCCsGAQUFBzAChipodHRwOi8vY2VydHMuZWlkLmJlbGdpdW0uYmUvYmVsZ2l1bXJzMi5jcnQwJgYIKwYBBQUHMAGGGmh0dHA6Ly9vY3NwLmVpZC5iZWxnaXVtLmJlMEQGA1UdIAQ9MDswOQYHYDgJAQECATAuMCwGCCsGAQUFBwIBFiBodHRwOi8vcmVwb3NpdG9yeS5laWQuYmVsZ2l1bS5iZTA5BgNVHR8EMjAwMC6gLKAqhihodHRwOi8vY3JsLmVpZC5iZWxnaXVtLmJlL2VpZGMyMDEzMDYuY3JsMA4GA1UdDwEB/wQEAwIGQDARBglghkgBhvhCAQEEBAMCBSAwGAYIKwYBBQUHAQMEDDAKMAgGBgQAjkYBATANBgkqhkiG9w0BAQUFAAOCAQEAEE3KGmLX5XXqArQwIZQmQEE6orKSu3a1z8ey1txsZC4rMk1vpvC6MtsfDaU4N6ooprhcM/WAlcIGOPCNhvxV+xcY7gUBwa6myiClnK0CMSiGYHqWcJG8ns13B9f0+5PJqsoziPoksXb2A9VXkr5aEdEmBYLjh7wG7GwAuDgDT0v87qtphN02/MAlJcNqT3JUUAotD7yfEybmK245jKo+pTYeCHGh7r1HzVWhbUDcQ/e1PpQXjVqBmr4k1ACtuu4H19t6K1P5kf7ta5JFEJPFgy3Hxt6YqzoY07WTVEpS4gJqtleIdX1Fhse7jq83ltcCzlfysBRqY/okUzipo1rbQw==</X509Certificate>
+                        </DigitalId>
+                    </ServiceDigitalIdentity>
+                    <ServiceDigitalIdentity>
+                        <DigitalId>
+                            <X509Certificate>MIID/TCCAuWgAwIBAgIQEAAAAAAAWcxEUPr16SDrtzANBgkqhkiG9w0BAQUFADAzMQswCQYDVQQGEwJCRTETMBEGA1UEAxMKQ2l0aXplbiBDQTEPMA0GA1UEBRMGMjAxMzExMB4XDTEzMDcyNDAxNDUzMVoXDTE4MDcxODIzNTk1OVowbzELMAkGA1UEBhMCQkUxIjAgBgNVBAMTGU1hYXJ0ZW4gT3R0b3kgKFNpZ25hdHVyZSkxDjAMBgNVBAQTBU90dG95MRYwFAYDVQQqEw1NYWFydGVuIEpvcmlzMRQwEgYDVQQFEws4MzEyMTQyNDEwMjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAjbr1T8USYkuh4X+Yi+coykq7mbF8PjgyjWQ28uODqRCkynuqJz468tCIYxsM/+/QdqEFq4Z5Z1YDbBYb5KsxfBmkzr9D+Gt49iWVt9Ig+FhngbOexwCW108t6Q/+NAo6gwl6IKkzv2wpEJIwtc51VFzvM+WkE1mNmclphYRTL5UCAwEAAaOCAVMwggFPMB8GA1UdIwQYMBaAFLws1Y0dT3YXfAzva5To9R51FmNhMG4GCCsGAQUFBwEBBGIwYDA2BggrBgEFBQcwAoYqaHR0cDovL2NlcnRzLmVpZC5iZWxnaXVtLmJlL2JlbGdpdW1yczIuY3J0MCYGCCsGAQUFBzABhhpodHRwOi8vb2NzcC5laWQuYmVsZ2l1bS5iZTBEBgNVHSAEPTA7MDkGB2A4CQEBAgEwLjAsBggrBgEFBQcCARYgaHR0cDovL3JlcG9zaXRvcnkuZWlkLmJlbGdpdW0uYmUwOQYDVR0fBDIwMDAuoCygKoYoaHR0cDovL2NybC5laWQuYmVsZ2l1bS5iZS9laWRjMjAxMzExLmNybDAOBgNVHQ8BAf8EBAMCBkAwEQYJYIZIAYb4QgEBBAQDAgUgMBgGCCsGAQUFBwEDBAwwCjAIBgYEAI5GAQEwDQYJKoZIhvcNAQEFBQADggEBAHNRipzOD4aXB7Oo4FgfBbWgPkmUGTqkz2jK9U2tEWUbyQrhirgqhxK6YMAHBvzL+7BHouMEAuxycZG3ozAfEDRZiznFWyqS8QlnHUe0ThaAvs8v5wYOUO7lJ6vnaNLLvQj7W3L5kCnEva5h0Jh9wMytlNp89dd02l7MD4BsidXoMN21AE8su39tBmNayLF6YrFLe3Zob4fQCuIEbx/pj3kYIVC4WM7uuDx+QpEJdNBtB41o2q2JJFqusRP7W0phkxX7sPtYkot6RXLdgaZNoB4YIRwGozIvcegydRVqpcYrvFSoppNHQqd8ZNzswjGzqBhlWYPsxdjjsxJiUyk7T1c=</X509Certificate>
+                        </DigitalId>
+                    </ServiceDigitalIdentity>
+                    <ServiceDigitalIdentity>
+                        <DigitalId>
+                            <X509Certificate>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</X509Certificate>
+                        </DigitalId>
+                    </ServiceDigitalIdentity>
+                    <ServiceDigitalIdentity>
+                        <DigitalId>
+                            <X509Certificate>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</X509Certificate>
+                        </DigitalId>
+                    </ServiceDigitalIdentity>
+                </ServiceDigitalIdentities>
+                <TSLLocation>https://ec.europa.eu/information_society/policy/esignature/trusted-list/tl-mp.xml</TSLLocation>
+                <AdditionalInformation>
+                    <OtherInformation>
+                        <TSLType>http://uri.etsi.org/TrstSvc/TrustedList/TSLType/EUlistofthelists</TSLType>
+                    </OtherInformation>
+                    <OtherInformation>
+                        <SchemeTerritory>EU</SchemeTerritory>
+                    </OtherInformation>
+                    <OtherInformation>
+                        <ns3:MimeType>application/vnd.etsi.tsl+xml</ns3:MimeType>
+                    </OtherInformation>
+                    <OtherInformation>
+                        <SchemeOperatorName>
+                            <Name xml:lang="en">European Commission</Name>
+                            <Name xml:lang="mt">Il-Kummissjoni Ewropea</Name>
+                        </SchemeOperatorName>
+                    </OtherInformation>
+                    <OtherInformation>
+                        <SchemeTypeCommunityRules>
+                            <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/schemerules/EUlistofthelists</URI>
+                        </SchemeTypeCommunityRules>
+                    </OtherInformation>
+                </AdditionalInformation>
+            </OtherTSLPointer>
+        </PointersToOtherTSL>
+        <ListIssueDateTime>2017-03-20T01:00:00Z</ListIssueDateTime>
+        <NextUpdate>
+            <dateTime>2017-09-20T00:00:00Z</dateTime>
+        </NextUpdate>
+        <DistributionPoints>
+            <URI>https://www.mca.org.mt/tsl/MT_TSL.xml</URI>
+        </DistributionPoints>
+    </SchemeInformation>
+    <TrustServiceProviderList>
+        <TrustServiceProvider>
+            <TSPInformation>
+                <TSPName>
+                    <Name xml:lang="en">Malta Electronic Certification Services Ltd</Name>
+                </TSPName>
+                <TSPTradeName>
+                    <Name xml:lang="en">NTRMT-C43419</Name>
+                    <Name xml:lang="en">Government of Malta</Name>
+                </TSPTradeName>
+                <TSPAddress>
+                    <PostalAddresses>
+                        <PostalAddress xml:lang="en">
+                            <StreetAddress>Gattard House - National Road</StreetAddress>
+                            <Locality>BLATA L-BAJDA</Locality>
+                            <PostalCode>HMR 9010</PostalCode>
+                            <CountryName>MT</CountryName>
+                        </PostalAddress>
+                        <PostalAddress xml:lang="mt">
+                            <StreetAddress>Gattard House - National Road</StreetAddress>
+                            <Locality>BLATA L-BAJDA</Locality>
+                            <PostalCode>HMR 9010</PostalCode>
+                            <CountryName>MT</CountryName>
+                        </PostalAddress>
+                    </PostalAddresses>
+                    <ElectronicAddress>
+                        <URI xml:lang="en">mailto:info.mecs@gov.mt</URI>
+                        <URI xml:lang="en">http://repository.qca.gov.mt</URI>
+                    </ElectronicAddress>
+                </TSPAddress>
+                <TSPInformationURI>
+                    <URI xml:lang="mt">http://repository.qca.gov.mt</URI>
+                    <URI xml:lang="en">http://repository.qca.gov.mt</URI>
+                </TSPInformationURI>
+            </TSPInformation>
+            <TSPServices>
+                <TSPService>
+                    <ServiceInformation>
+                        <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                        <ServiceName>
+                            <Name xml:lang="en">Malta Citizen Electronic Identity CA</Name>
+                        </ServiceName>
+                        <ServiceDigitalIdentity>
+                            <DigitalId>
+<X509Certificate>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</X509Certificate>
+                            </DigitalId>
+                        </ServiceDigitalIdentity>
+                        <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted</ServiceStatus>
+                        <StatusStartingTime>2016-06-30T22:00:00Z</StatusStartingTime>
+                        <ServiceInformationExtensions>
+                            <Extension Critical="true">
+<AdditionalServiceInformation>
+    <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/ForeSignatures</URI>
+</AdditionalServiceInformation>
+                            </Extension>
+                        </ServiceInformationExtensions>
+                    </ServiceInformation>
+                    <ServiceHistory>
+                        <ServiceHistoryInstance>
+                            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                            <ServiceName>
+<Name xml:lang="en">Malta Citizen Electronic Identity CA</Name>
+                            </ServiceName>
+                            <ServiceDigitalIdentity>
+<DigitalId>
+    <X509SubjectName>CN=Malta Citizen Electronic Identity CA, OU=Class Qualified, O=Government of Malta, C=MT</X509SubjectName>
+</DigitalId>
+<DigitalId>
+    <X509SKI>DPWIkbbrsLiD55+ZYFE8Q3xOq8c=</X509SKI>
+</DigitalId>
+                            </ServiceDigitalIdentity>
+                            <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/undersupervision</ServiceStatus>
+                            <StatusStartingTime>2014-02-13T02:00:00Z</StatusStartingTime>
+                        </ServiceHistoryInstance>
+                    </ServiceHistory>
+                </TSPService>
+                <TSPService>
+                    <ServiceInformation>
+                        <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                        <ServiceName>
+                            <Name xml:lang="en">Malta Resident Electronic Identity CA</Name>
+                        </ServiceName>
+                        <ServiceDigitalIdentity>
+                            <DigitalId>
+<X509Certificate>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</X509Certificate>
+                            </DigitalId>
+                        </ServiceDigitalIdentity>
+                        <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted</ServiceStatus>
+                        <StatusStartingTime>2016-06-30T22:00:00Z</StatusStartingTime>
+                        <ServiceInformationExtensions>
+                            <Extension Critical="true">
+<AdditionalServiceInformation>
+    <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/ForeSignatures</URI>
+</AdditionalServiceInformation>
+                            </Extension>
+                        </ServiceInformationExtensions>
+                    </ServiceInformation>
+                    <ServiceHistory>
+                        <ServiceHistoryInstance>
+                            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                            <ServiceName>
+<Name xml:lang="en">Malta Resident Electronic Identity CA</Name>
+                            </ServiceName>
+                            <ServiceDigitalIdentity>
+<DigitalId>
+    <X509SubjectName>CN=Malta Resident Electronic Identity CA, OU=Class Qualified, O=Government of Malta, C=MT</X509SubjectName>
+</DigitalId>
+<DigitalId>
+    <X509SKI>o7uhPupAwFEsPOjnDCt5sBQT37U=</X509SKI>
+</DigitalId>
+                            </ServiceDigitalIdentity>
+                            <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/undersupervision</ServiceStatus>
+                            <StatusStartingTime>2013-02-04T02:00:00Z</StatusStartingTime>
+                        </ServiceHistoryInstance>
+                    </ServiceHistory>
+                </TSPService>
+            </TSPServices>
+        </TrustServiceProvider>
+        <TrustServiceProvider>
+            <TSPInformation>
+                <TSPName>
+                    <Name xml:lang="en">ANF AC Malta Ltd</Name>
+                </TSPName>
+                <TSPTradeName>
+                    <Name xml:lang="en">NTRMT-C75870</Name>
+                    <Name xml:lang="en">VATMT-23399415</Name>
+                </TSPTradeName>
+                <TSPAddress>
+                    <PostalAddresses>
+                        <PostalAddress xml:lang="mt">
+                            <StreetAddress>B2, Industry Street</StreetAddress>
+                            <Locality>QORMI</Locality>
+                            <PostalCode>QRM 3000</PostalCode>
+                            <CountryName>MT</CountryName>
+                        </PostalAddress>
+                        <PostalAddress xml:lang="en">
+                            <StreetAddress>B2, Industry Street</StreetAddress>
+                            <Locality>QORMI</Locality>
+                            <PostalCode>QRM 3000</PostalCode>
+                            <CountryName>MT</CountryName>
+                        </PostalAddress>
+                    </PostalAddresses>
+                    <ElectronicAddress>
+                        <URI xml:lang="en">mailto:edwin@anf.ac</URI>
+                        <URI xml:lang="en">http://www.anf.es</URI>
+                    </ElectronicAddress>
+                </TSPAddress>
+                <TSPInformationURI>
+                    <URI xml:lang="mt">http://www.anf.es/documents</URI>
+                    <URI xml:lang="en">http://www.anf.es/documents</URI>
+                </TSPInformationURI>
+            </TSPInformation>
+            <TSPServices>
+                <TSPService>
+                    <ServiceInformation>
+                        <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                        <ServiceName>
+                            <Name xml:lang="en">ANF Trusted ID CA1</Name>
+                        </ServiceName>
+                        <ServiceDigitalIdentity>
+                            <DigitalId>
+<X509Certificate>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</X509Certificate>
+                            </DigitalId>
+                        </ServiceDigitalIdentity>
+                        <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted</ServiceStatus>
+                        <StatusStartingTime>2016-06-30T22:00:00Z</StatusStartingTime>
+                        <ServiceInformationExtensions>
+                            <Extension Critical="true">
+<ns5:Qualifications>
+    <ns5:QualificationElement>
+        <ns5:Qualifiers>
+            <ns5:Qualifier uri="http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/NotQualified"/>
+        </ns5:Qualifiers>
+        <ns5:CriteriaList assert="none">
+            <ns5:KeyUsage>
+                <ns5:KeyUsageBit name="nonRepudiation">true</ns5:KeyUsageBit>
+            </ns5:KeyUsage>
+            <ns5:CriteriaList assert="atLeastOne">
+                <ns5:PolicySet>
+                    <ns5:PolicyIdentifier>
+                        <ns4:Identifier>1.3.6.1.4.1.18339.3.4.1.2.22</ns4:Identifier>
+                    </ns5:PolicyIdentifier>
+                </ns5:PolicySet>
+                <ns5:PolicySet>
+                    <ns5:PolicyIdentifier>
+                        <ns4:Identifier>1.3.6.1.4.1.18339.2.5.1.3</ns4:Identifier>
+                    </ns5:PolicyIdentifier>
+                </ns5:PolicySet>
+            </ns5:CriteriaList>
+            <ns5:Description>All certificates issued under this CA/QC service that do not inlcude nonRepudiation bit set to true and either one of the above certificate policy OID are issued as non-qualified certificates</ns5:Description>
+        </ns5:CriteriaList>
+    </ns5:QualificationElement>
+</ns5:Qualifications>
+                            </Extension>
+                            <Extension Critical="true">
+<AdditionalServiceInformation>
+    <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/ForeSignatures</URI>
+</AdditionalServiceInformation>
+                            </Extension>
+                        </ServiceInformationExtensions>
+                    </ServiceInformation>
+                    <ServiceHistory>
+                        <ServiceHistoryInstance>
+                            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                            <ServiceName>
+<Name xml:lang="en">ANF Trusted ID CA1</Name>
+                            </ServiceName>
+                            <ServiceDigitalIdentity>
+<DigitalId>
+    <X509SubjectName>CN=ANF Trusted ID CA1, SERIALNUMBER=MT23399415, OU=ANF Malta Identity Authority, O=ANF AC Malta Ltd, C=MT</X509SubjectName>
+</DigitalId>
+<DigitalId>
+    <X509SKI>MukBjq7Gn94mV60f7k3UZPQueFc=</X509SKI>
+</DigitalId>
+                            </ServiceDigitalIdentity>
+                            <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/undersupervision</ServiceStatus>
+                            <StatusStartingTime>2016-06-27T22:00:00Z</StatusStartingTime>
+                            <ServiceInformationExtensions>
+<Extension Critical="true">
+    <ns5:Qualifications>
+        <ns5:QualificationElement>
+            <ns5:Qualifiers>
+                <ns5:Qualifier uri="http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/NotQualified"/>
+            </ns5:Qualifiers>
+            <ns5:CriteriaList assert="none">
+                <ns5:KeyUsage>
+                    <ns5:KeyUsageBit name="nonRepudiation">true</ns5:KeyUsageBit>
+                </ns5:KeyUsage>
+                <ns5:CriteriaList assert="atLeastOne">
+                    <ns5:PolicySet>
+                        <ns5:PolicyIdentifier>
+                            <ns4:Identifier>1.3.6.1.4.1.18339.3.4.1.2.22</ns4:Identifier>
+                        </ns5:PolicyIdentifier>
+                    </ns5:PolicySet>
+                    <ns5:PolicySet>
+                        <ns5:PolicyIdentifier>
+                            <ns4:Identifier>1.3.6.1.4.1.18339.2.5.1.3</ns4:Identifier>
+                        </ns5:PolicyIdentifier>
+                    </ns5:PolicySet>
+                </ns5:CriteriaList>
+                <ns5:Description>All certificates issued under this CA/QC service that do not inlcude nonRepudiation bit set to true and either one of the above certificate policy OID are issued as non-qualified certificates</ns5:Description>
+            </ns5:CriteriaList>
+        </ns5:QualificationElement>
+    </ns5:Qualifications>
+</Extension>
+                            </ServiceInformationExtensions>
+                        </ServiceHistoryInstance>
+                    </ServiceHistory>
+                </TSPService>
+                <TSPService>
+                    <ServiceInformation>
+                        <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                        <ServiceName>
+                            <Name xml:lang="en">ANF Trusted PA CA1</Name>
+                        </ServiceName>
+                        <ServiceDigitalIdentity>
+                            <DigitalId>
+<X509Certificate>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</X509Certificate>
+                            </DigitalId>
+                        </ServiceDigitalIdentity>
+                        <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted</ServiceStatus>
+                        <StatusStartingTime>2016-06-30T22:00:00Z</StatusStartingTime>
+                        <ServiceInformationExtensions>
+                            <Extension Critical="true">
+<ns5:Qualifications>
+    <ns5:QualificationElement>
+        <ns5:Qualifiers>
+            <ns5:Qualifier uri="http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/NotQualified"/>
+        </ns5:Qualifiers>
+        <ns5:CriteriaList assert="none">
+            <ns5:KeyUsage>
+                <ns5:KeyUsageBit name="nonRepudiation">true</ns5:KeyUsageBit>
+            </ns5:KeyUsage>
+            <ns5:CriteriaList assert="atLeastOne">
+                <ns5:PolicySet>
+                    <ns5:PolicyIdentifier>
+                        <ns4:Identifier>1.3.6.1.4.1.18339.4.1.3.22</ns4:Identifier>
+                    </ns5:PolicyIdentifier>
+                </ns5:PolicySet>
+            </ns5:CriteriaList>
+            <ns5:Description>All certificates issued under this CA/QC service that do not inlcude nonRepudiation bit set to true and either one of the above certificate policy OID are issued as non-qualified certificates</ns5:Description>
+        </ns5:CriteriaList>
+    </ns5:QualificationElement>
+</ns5:Qualifications>
+                            </Extension>
+                            <Extension Critical="true">
+<AdditionalServiceInformation>
+    <URI xml:lang="en">http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/ForeSignatures</URI>
+</AdditionalServiceInformation>
+                            </Extension>
+                        </ServiceInformationExtensions>
+                    </ServiceInformation>
+                    <ServiceHistory>
+                        <ServiceHistoryInstance>
+                            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                            <ServiceName>
+<Name xml:lang="en">ANF Trusted PA CA1</Name>
+                            </ServiceName>
+                            <ServiceDigitalIdentity>
+<DigitalId>
+    <X509SubjectName>CN=ANF Trusted PA CA1, SERIALNUMBER=MT23399415, OU=ANF Malta PA Authority, O=ANF AC Malta Ltd, C=MT</X509SubjectName>
+</DigitalId>
+<DigitalId>
+    <X509SKI>8cl/YnKQfH0K/zcdV6Sx/b04oKc=</X509SKI>
+</DigitalId>
+                            </ServiceDigitalIdentity>
+                            <ServiceStatus>http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/undersupervision</ServiceStatus>
+                            <StatusStartingTime>2016-04-28T02:00:00Z</StatusStartingTime>
+                            <ServiceInformationExtensions>
+<Extension Critical="true">
+    <ns5:Qualifications>
+        <ns5:QualificationElement>
+            <ns5:Qualifiers>
+                <ns5:Qualifier uri="http://uri.etsi.org/TrstSvc/TrustedList/SvcInfoExt/NotQualified"/>
+            </ns5:Qualifiers>
+            <ns5:CriteriaList assert="none">
+                <ns5:KeyUsage>
+                    <ns5:KeyUsageBit name="nonRepudiation">true</ns5:KeyUsageBit>
+                </ns5:KeyUsage>
+                <ns5:CriteriaList assert="atLeastOne">
+                    <ns5:PolicySet>
+                        <ns5:PolicyIdentifier>
+                            <ns4:Identifier>1.3.6.1.4.1.18339.4.1.3.22</ns4:Identifier>
+                        </ns5:PolicyIdentifier>
+                    </ns5:PolicySet>
+                </ns5:CriteriaList>
+                <ns5:Description>All certificates issued under this CA/QC service that do not inlcude nonRepudiation bit set to true and either one of the above certificate policy OID are issued as non-qualified certificates</ns5:Description>
+            </ns5:CriteriaList>
+        </ns5:QualificationElement>
+    </ns5:Qualifications>
+</Extension>
+                            </ServiceInformationExtensions>
+                        </ServiceHistoryInstance>
+                    </ServiceHistory>
+                </TSPService>
+            </TSPServices>
+        </TrustServiceProvider>
+    </TrustServiceProviderList>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="id-e11d642350d50fe908eaf672d098d697"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference Id="xml_ref_id" Type="" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>nHqyNHMt6BLDAk2nAPGU02l19lsIxcVICW5T1Zcc5lQ=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-e11d642350d50fe908eaf672d098d697"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>4Mvj73m9JNQMilVuawN7bkFtk5wqKmUvqeSqBTgv+qk=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-e11d642350d50fe908eaf672d098d697">otsqaX2hEnAYVWqWoHc50xt3I2agj1JVPClON5SwdtrJz2mZpGM/+hC5ty4vvkFxabgXWdpT0grEyK8+NSO5jIg9ueOKZjmPOyZRyvqBu/5aXWo6YjAHLgMLWwAyze7Ebadf8sDM0HtmT4xb5sDmLNiKd265cQ1XggvbXcf0u8HxpGGnfQzTK8/v3/TSn1J+jdBN0w1jlWHR19XlibHFXg6qJDCm9ooo2T5wWDZhEUstVbb89SmWVkiztvtfUdP1WJ8baXYr0MXRUXjQFuX15P7FY43q2RgRc8xCEoYmhL4evhra6A6sTg0t6ASsgm6uHOtIx7Ydv4J2FpWUmFRoKA==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDtTCCAp2gAwIBAgIJANGZrDHpPeweMA0GCSqGSIb3DQEBCwUAMEkxCzAJBgNVBAYTAk1UMREwDwYDVQQHEwhGbG9yaWFuYTEnMCUGA1UEChMeTWFsdGEgQ29tbXVuaWNhdGlvbnMgQXV0aG9yaXR5MB4XDTE0MDUyMDA5NTcyNVoXDTIwMDUwODA5NTcyNVowSTELMAkGA1UEBhMCTVQxETAPBgNVBAcTCEZsb3JpYW5hMScwJQYDVQQKEx5NYWx0YSBDb21tdW5pY2F0aW9ucyBBdXRob3JpdHkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCzlByjEn5W2DyrJG4r6SA6HiC0+7xzJH4Fl/EqIomyoeSBkci32aW17Bhx1MyYq+uLb6IURMUoqSIs1ZNh4lj4yycgCq/UHh0GttERM643wAOQtrxb3/Ds3txIkJSJ+DCRVMOyDJO2uWqcXFa1V6e62xH2ZWSp/TbrmlRGzWlpVyu80xE/pIn6Gs7pEAyz8TUOiPsPOw5h3kJttrRURmq3WafcRW4eDiVUIehL1rGv8635qyB+JKG7pWw8OsfVylIAcj75UUTOqM4I6oHKyOJPLXM3DcPjzwfDwWlbXABgtNEDJYIfpQd9vdjEgXsXkmsSNzgd5vPh7MbOE58ShsgfAgMBAAGjgZ8wgZwwYwYDVR0jBFwwWqFNpEswSTELMAkGA1UEBhMCTVQxETAPBgNVBAcTCEZsb3JpYW5hMScwJQYDVQQKEx5NYWx0YSBDb21tdW5pY2F0aW9ucyBBdXRob3JpdHmCCQDRmawx6T3sHjAJBgNVHRMEAjAAMAsGA1UdDwQEAwIGwDAdBgNVHQ4EFgQUTU4Fh/R+vnm6W3aZdKQNAtGpfT8wDQYJKoZIhvcNAQELBQADggEBAAgU3PUUWGxToG5cDdZAVBimax+O6LbdSrxi2V2Sy4RmKcMZzT/9G9Gw+nHgFrb/4nkZD550RWArzhBpv4+2+G3WFroZ6ThYxsPpLdayU7Rj7JtRoCkE7qOPzerTE7k4jMIb7ejdrNvMRZz3BjEu5PE80hpUByXGHVTqBq8lw/CehgdfYD/CtLZ2hJK9o1KPqi8DPKMAvFQyYcSZ5G5GqMnhbwyZKo1YB/cEl73KsZ3OF4asKSSh5vQwbRpxd/AQTVLr9Y6VyQ+xl4NXBUhIgKoNyLm3B43tel3l4E314L5ihFJK6Kz/P6IfTeU8orCpTFfC4ylogdhMwlLgXlaoNwM=</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-e11d642350d50fe908eaf672d098d697"><xades:SignedProperties Id="xades-id-e11d642350d50fe908eaf672d098d697"><xades:SignedSignatureProperties><xades:SigningTime>2017-06-05T12:14:34Z</xades:SigningTime><xades:SigningCertificate><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>YejxV1bFjo6vPdOAjkb69RIBesA=</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>O=Malta Communications Authority,L=Floriana,C=MT</ds:X509IssuerName><ds:X509SerialNumber>15103292155730193438</ds:X509SerialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#xml_ref_id"><xades:MimeType>application/octet-stream</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></TrustServiceStatusList>
