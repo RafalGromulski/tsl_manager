@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,27 +25,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_tbif1w5eua$*0o12h7)#%_*a$9^%u@$eh-shq_8&#as)frq)*'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    # "whitenoise.runserver_nostatic",
+    # "django.contrib.staticfiles",
+    "django_bootstrap5",
+    "django_filters",
+    # "django_crontab",
+    # "rest_framework",
+    "tsl_manager_app",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,7 +66,7 @@ ROOT_URLCONF = 'tsl_manager_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,9 +85,13 @@ WSGI_APPLICATION = 'tsl_manager_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     }
 }
 
@@ -114,9 +130,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "services_to_served"
+LOGOUT_REDIRECT_URL = "greeting_view"
+
+# Bootstrap default settings
+BOOTSTRAP5 = {
+    "css_url": None,
+    "javascript_url": None,
+    "theme_url": None,
+    "javascript_in_head": False,
+    "wrapper_class": "mb-3",
+    "inline_wrapper_class": "",
+    "horizontal_label_class": "col-sm-2",
+    "horizontal_field_class": "col-sm-8",
+    "horizontal_field_offset_class": "offset-sm-2",
+    "set_placeholder": True,
+    "required_css_class": "",
+    "error_css_class": "",
+    "success_css_class": "",
+    "server_side_validation": False,
+    "formset_renderers": {
+        "default": "django_bootstrap5.renderers.FormsetRenderer",
+    },
+    "form_renderers": {
+        "default": "django_bootstrap5.renderers.FormRenderer",
+    },
+    "field_renderers": {
+        "default": "django_bootstrap5.renderers.FieldRenderer",
+    },
+}
