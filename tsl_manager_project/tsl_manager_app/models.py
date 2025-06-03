@@ -2,6 +2,7 @@ from django.db import models
 
 from .choices import TspServiceStatus, ServiceStatus, CrlUrlStatus
 
+
 class TspServiceInfo(models.Model):
     country_code = models.CharField(verbose_name="Kod państwa", max_length=2)
     country_name = models.CharField(verbose_name="Państwo", max_length=20)

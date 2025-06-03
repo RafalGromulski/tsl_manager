@@ -1,15 +1,12 @@
-import base64
-import hashlib
-import os
-import xml.dom.minidom as minidom
-from datetime import datetime
-from urllib.parse import urlparse
-
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, TemplateView, UpdateView, View
+
 # from rest_framework import viewsets
 
+from .choices import ServiceStatus, CrlUrlStatus
+from .constants import COUNTRIES_PL
 from .filters import MainViewFilter
 from .forms import CrlUrlForm
 from .models import TspServiceInfo, TslValidityInfo
@@ -21,8 +18,8 @@ class GreetingView(TemplateView):
     template_name = "greeting_view.html"
 
 
-class FilteredServiceListView(LoginRequiredMixin, View):
-# class FilteredServiceListView(View):
+# class FilteredServiceListView(LoginRequiredMixin, View):
+class FilteredServiceListView(View):
     model = TspServiceInfo
     template_name = None
     filter_kwargs = {}
@@ -45,8 +42,8 @@ class ServicesToServedView(FilteredServiceListView):
     # template_name = "services_to_served.html"
     filter_kwargs = {
         "service_status_app__in": [
-            TspServiceInfo.ServiceStatus.NEW_NOT_SERVED,
-            TspServiceInfo.ServiceStatus.WITHDRAWN_NOT_SERVED,
+            ServiceStatus.NEW_NOT_SERVED,
+            ServiceStatus.WITHDRAWN_NOT_SERVED,
         ]
     }
     order_by_fields = ["country_name", "tsp_name", "tsp_service_name", "id"]
@@ -59,7 +56,7 @@ class AllServicesView(FilteredServiceListView):
 
 class ServedServicesView(FilteredServiceListView):
     template_name = "served_services.html"
-    filter_kwargs = {"service_status_app": TspServiceInfo.ServiceStatus.SERVED}
+    filter_kwargs = {"service_status_app": ServiceStatus.SERVED}
     order_by_fields = ["id", "country_name", "tsp_name"]
 
 
@@ -82,7 +79,7 @@ class ConfirmServiceView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         tsp_object = self.get_object(pk)
-        tsp_object.service_status_app = TspServiceInfo.ServiceStatus.SERVED
+        tsp_object.service_status_app = ServiceStatus.SERVED
         tsp_object.save()
         return redirect("services_to_served")
 
@@ -106,34 +103,10 @@ class CrlUrlFormView(LoginRequiredMixin, UpdateView):
         initial["crl_url"] = self.object.crl_url
         return initial
 
-    # def form_valid(self, form):
-    #     self.object = form.save(commit=False)
-    #     self.object.service_status_app = TspServiceInfo.ServiceStatus.SERVED
-    #     self.object.crl_url_status_app = TspServiceInfo.CrlUrlStatus.URL_DEFINED
-    #     self.object.save()
-    #     return super().form_valid(form)
-
     def form_valid(self, form):
-        form.instance.service_status_app = TspServiceInfo.ServiceStatus.SERVED
-        form.instance.crl_url_status_app = TspServiceInfo.CrlUrlStatus.URL_DEFINED
+        form.instance.service_status_app = ServiceStatus.SERVED
+        form.instance.crl_url_status_app = CrlUrlStatus.URL_DEFINED
         return super().form_valid(form)
-
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["tsp_object"] = self.model.objects.get(id=self.kwargs["pk"])
-    #     return context
-    #
-    # def get_initial(self):
-    #     initial = super().get_initial()
-    #     initial["crl_url"] = self.model.objects.get(id=self.kwargs["pk"]).crl_url
-    #     return initial
-    #
-    # def form_valid(self, form):
-    #     self.object.service_status_app = "Obsłużona"
-    #     self.object.crl_url_status_app = "CRL URL ustalony"
-    #     form.save()
-    #     return super().form_valid(form)
 
 
 class TslValidityView(LoginRequiredMixin, TemplateView):
@@ -148,48 +121,12 @@ class TslValidityView(LoginRequiredMixin, TemplateView):
 
 class UpdateServicesView(LoginRequiredMixin, View):
     template_name = "update_services.html"
-    DATA_DIRECTORY = r"C:\Users\r2020\Desktop\tsl-manager\tsl\tsl_old"
-    COUNTRIES = {
-        "AT": "Austria",
-        "BE": "Belgia",
-        "BG": "Bułgaria",
-        "HR": "Chorwacja",
-        "CY": "Cypr",
-        "CZ": "Czechy",
-        "DK": "Dania",
-        "EE": "Estonia",
-        "FI": "Finlandia",
-        "FR": "Francja",
-        "EL": "Grecja",
-        "ES": "Hiszpania",
-        "NL": "Holandia",
-        "IE": "Irlandia",
-        "IS": "Islandia",
-        "LI": "Liechtenstein",
-        "LT": "Litwa",
-        "LU": "Luksemburg",
-        "LV": "Łotwa",
-        "MT": "Malta",
-        "DE": "Niemcy",
-        "NO": "Norwegia",
-        "PL": "Polska",
-        "PT": "Portugalia",
-        "RO": "Rumunia",
-        "SK": "Słowacja",
-        "SI": "Słowenia",
-        "CH": "Szwajcaria",
-        "SE": "Szwecja",
-        "EU": "Unia Europejska",
-        "HU": "Węgry",
-        "UK": "Wielka Brytania",
-        "IT": "Włochy",
-    }
 
     def get(self, request):
         return render(request, self.template_name)
 
     def post(self, request):
-        parser = TslParser(self.DATA_DIRECTORY, self.COUNTRIES)
+        parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
         service_data = parser.tsl_parse()
 
         updater = ServiceUpdater(service_data)
