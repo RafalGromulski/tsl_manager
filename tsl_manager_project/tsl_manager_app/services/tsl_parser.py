@@ -1,20 +1,39 @@
 import base64
+import binascii
 import hashlib
+import logging
 import os
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Union
 from urllib.parse import urlparse
 from xml.dom.minidom import parse as minidom_parse
 
 from ..choices import ServiceStatus, CrlUrlStatus
 from ..models import TspServiceInfo
 
+logger = logging.getLogger(__name__)
+
 
 class TslParser:
-    def __init__(self, directory_path, countries):
-        self.directory_path = directory_path
+    def __init__(self, directory_path: Union[str, Path], countries: Dict[str, str]) -> None:
+        """
+        Initializes the TSL parser.
+
+        Args:
+            directory_path: Path to the directory containing XML files.
+            countries: Dictionary mapping country codes to country names.
+        """
+        self.directory_path = str(directory_path)
         self.countries = countries
 
-    def tsl_parse(self):
+    def tsl_parse(self) -> List[Dict[str, Any]]:
+        """
+        Parses XML files and extracts service information.
+
+        Returns:
+            A list of dictionaries containing service data.
+        """
         services = []
 
         for filename in os.listdir(self.directory_path):
@@ -46,13 +65,15 @@ class TslParser:
                         try:
                             decoded = base64.b64decode(cert_value)
                             service_id = hashlib.sha256(decoded).hexdigest()
-                        except Exception:
-                            pass
+                        except (binascii.Error, ValueError) as e:
+                            logger.warning(f"Nie można zdekodować certyfikatu: {e}")
+                            service_id = ""
 
                     start_date_raw = self._get_text(service, "StatusStartingTime", default="")
                     try:
                         start_date = datetime.fromisoformat(start_date_raw) if start_date_raw else None
-                    except Exception:
+                    except ValueError as e:
+                        logger.warning(f"Błędny format daty '{start_date_raw}': {e}")
                         start_date = None
 
                     status_uri = self._get_text(service, "ServiceStatus", default="")
@@ -76,15 +97,39 @@ class TslParser:
         return services
 
     @staticmethod
-    def _get_text(name, tag_name, index=1, default="", namespace="*"):
+    def _get_text(name: Any, tag_name: str, index: int = 1, default: str = "", namespace: str = "*") -> str:
+        """
+        Retrieves the text content of a given XML tag.
+
+        Args:
+            name: XML element.
+            tag_name: Name of the tag to retrieve.
+            index: Index of the child node.
+            default: Default value if tag is not found.
+            namespace: XML namespace.
+
+        Returns:
+            The text content or the default value.
+        """
         try:
             tag = name.getElementsByTagNameNS(namespace, tag_name)[0]
             return tag.childNodes[index].firstChild.nodeValue.strip()  # .replace("'", "")
-        except (IndexError, AttributeError):
+        except (IndexError, AttributeError) as e:
+            logger.debug(f"Brak tagu '{tag_name}' lub jego struktury — używam domyślnej wartości '{default}': {e}")
             return default
 
     @staticmethod
-    def _extract_urls(tsp_node, service_node):
+    def _extract_urls(tsp_node: Any, service_node: Any) -> Dict[str, str]:
+        """
+        Extracts TSP and CRL URLs from the XML nodes.
+
+        Args:
+            tsp_node: TrustServiceProvider XML node.
+            service_node: TSPService XML node.
+
+        Returns:
+            Dictionary with 'tsp_url' and 'crl_url'.
+        """
         tsp_url = ""
         crl_url = ""
 
@@ -118,14 +163,29 @@ class TslParser:
 
 
 class ServiceUpdater:
-    def __init__(self, service_data_list):
+    def __init__(self, service_data_list: List[Dict[str, Any]]) -> None:
+        """
+        Initializes the service updater.
+
+        Args:
+            service_data_list: List of dictionaries with service data.
+        """
         self.service_data_list = service_data_list
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Executes the update or creation process for services.
+        """
         for data in self.service_data_list:
             self._update_or_create_service(data)
 
-    def _update_or_create_service(self, data):
+    def _update_or_create_service(self, data: Dict[str, Any]) -> None:
+        """
+        Updates an existing service or creates a new one based on the provided data.
+
+        Args:
+            data: Dictionary containing service data.
+        """
         existing_qs = TspServiceInfo.objects.filter(
             tsp_service_name=data["tsp_service_name"],
             tsp_service_digital_id=data["tsp_service_digital_id"],
@@ -137,7 +197,14 @@ class ServiceUpdater:
         else:
             self._create_new_service(data)
 
-    def _update_existing_service(self, obj, data):
+    def _update_existing_service(self, obj: TspServiceInfo, data: Dict[str, Any]) -> None:
+        """
+        Updates an existing TSP service object with new data if any fields have changed.
+
+        Args:
+            obj: Existing TSP service database object.
+            data: New service data dictionary.
+        """
         updated = False
 
         # URL
@@ -178,7 +245,13 @@ class ServiceUpdater:
         if updated:
             obj.save()
 
-    def _create_new_service(self, data):
+    def _create_new_service(self, data: Dict[str, Any]) -> None:
+        """
+        Creates a new TSP service entry in the database if it is a QC/CA service.
+
+        Args:
+            data: Dictionary containing service data.
+        """
         if not self._is_qc_ca(data):
             return  # ignore other than CA/QC
 
@@ -200,11 +273,29 @@ class ServiceUpdater:
         new_obj.save()
 
     @staticmethod
-    def _is_qc_ca(data):
+    def _is_qc_ca(data: Dict[str, Any]) -> bool:
+        """
+        Checks if the service type is a QC/CA service.
+
+        Args:
+            data: Service data dictionary.
+
+        Returns:
+            True if QC/CA, otherwise False.
+        """
         return data["tsp_service_type"] == "http://uri.etsi.org/TrstSvc/Svctype/CA/QC"
 
     @staticmethod
-    def _get_initial_status(data):
+    def _get_initial_status(data: Dict[str, Any]) -> ServiceStatus:
+        """
+        Determines initial application status for the service.
+
+        Args:
+            data: Service data dictionary.
+
+        Returns:
+            Corresponding ServiceStatus.
+        """
         if data["tsp_service_status"] == "granted":
             return ServiceStatus.NEW_NOT_SERVED
         else:
