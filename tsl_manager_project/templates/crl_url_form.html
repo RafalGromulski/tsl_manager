@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %} TSL Manager - Edycja/Potwierdzenie adresu CRL URL usługi {% endblock %}
+{% block page_content %}
+<div class="container-fluid">
+    <div class="jumbotron">
+        <button type="button"
+                class="btn btn-dark"
+                aria-pressed="true"
+                onClick="history.back();"
+                style="width:8%;">
+            <i class="bi bi-arrow-return-left"></i> Powrót
+        </button>
+        <h5 class="display-6 text-center mb-5">Edycja/Potwierdzenie adresu CRL URL usługi</h5>
+        <hr class="my-4">
+    </div>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-50">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white"
+                         style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <h2 class="fw-bold mb-3">Potwierdź oraz/lub edytuj CRL URL dla usługi:</h2>
+                                <p class="text-white-100 mb-4"> {{ tsp_object.tsp_service_name }} </p>
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    {{ form }}
+                                    <input type="submit"
+                                           class="btn btn-success btn-lg my-4 px-5"
+                                           value="Akceptuję">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

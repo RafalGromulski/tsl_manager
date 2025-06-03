@@ -1,6 +1,6 @@
 # from pathlib import Path
 
-DATA_DIRECTORY = r"C:\Users\r2020\Desktop\tsl-manager\tsl\tsl_old"  # to change
+DATA_DIRECTORY = r"C:\Users\r2020\Desktop\tsl_manager\tsl_manager_project/send_to_db/data/data1"
 # BASE_DIR = Path(__file__).resolve().parent.parent
 # DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "tsl1"
 # print(DATA_DIRECTORY)

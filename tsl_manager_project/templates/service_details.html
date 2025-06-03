@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %} TSL Manager - Szczegóły usługi {% endblock %}
+{% block page_content %}
+<div class="container-fluid">
+    <div class="jumbotron">
+        <button type="button"
+                class="btn btn-dark"
+                aria-pressed="true"
+                onClick="history.back();"
+                style="width:8%;">
+            <i class="bi bi-arrow-return-left"></i> Powrót
+        </button>
+        <h5 class="display-6 text-center mb-5">Szczegóły usługi: {{ tsp_service.tsp_service_name }}</h5>
+        <hr class="my-4">
+    </div>
+    <div class="table-responsive mt-3" style="width:100%">
+        <table class="table table-bordered table-sm text-center table-light" border="1">
+            <thead class="table-primary">
+            <tr>
+                <th class="th-sm align-middle" scope="col">ID</th>
+                <th class="th-sm align-middle" scope="col">Kod państwa</th>
+                <th class="th-sm align-middle" scope="col">Państwo</th>
+                <th class="th-sm align-middle" scope="col">Dostawca usługi</th>
+                <th class="th-sm align-middle" scope="col">Nazwa usługi</th>
+                <th class="th-sm align-middle" scope="col">Typ usługi</th>
+                <th class="th-sm align-middle" scope="col">Status usługi</th>
+                <th class="th-sm align-middle" scope="col">Start usługi</th>
+                <th class="th-sm align-middle" scope="col">TSP URL</th>
+                <th class="th-sm align-middle" scope="col">CRL URL</th>
+                <th class="th-sm align-middle" scope="col">Status CRL URL</th>
+                <th class="th-sm align-middle" scope="col">Status obsługi</th>
+                <th class="th-sm align-middle" scope="col">Digital ID usługi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="align-middle">{{ tsp_service.id }}</td>
+                <td class="align-middle">{{ tsp_service.country_code }}</td>
+                <td class="align-middle">{{ tsp_service.country_name }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_name }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_service_name }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_service_type }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_service_status }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_service_start_date|date:"Y-m-d" }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_url }}</td>
+                <td class="align-middle">{{ tsp_service.crl_url }}</td>
+                <td class="align-middle">{{ tsp_service.crl_url_status_app }}</td>
+                <td class="align-middle">{{ tsp_service.service_status_app }}</td>
+                <td class="align-middle">{{ tsp_service.tsp_service_digital_id }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
