@@ -5,6 +5,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 from xml.dom.minidom import parse as minidom_parse
 
+from ..choices import ServiceStatus, CrlUrlStatus
 from ..models import TspServiceInfo
 
 
@@ -153,12 +154,12 @@ class ServiceUpdater:
             obj.tsp_service_type = data["tsp_service_type"]
             updated = True
 
-            if obj.service_status_app != TspServiceInfo.ServiceStatus.SERVED:
+            if obj.service_status_app != ServiceStatus.SERVED:
                 if self._is_qc_ca(data):
-                    obj.service_status_app = TspServiceInfo.ServiceStatus.NEW_NOT_SERVED
-                    obj.crl_url_status_app = TspServiceInfo.CrlUrlStatus.URL_UNDEFINED
+                    obj.service_status_app = ServiceStatus.NEW_NOT_SERVED
+                    obj.crl_url_status_app = CrlUrlStatus.URL_UNDEFINED
                 else:
-                    obj.service_status_app = TspServiceInfo.ServiceStatus.WITHDRAWN_NOT_SERVED
+                    obj.service_status_app = ServiceStatus.WITHDRAWN_NOT_SERVED
                 updated = True
 
         # Status ETSI (granted/withdrawn)
@@ -166,12 +167,12 @@ class ServiceUpdater:
             obj.tsp_service_status = data["tsp_service_status"]
             updated = True
 
-            if obj.service_status_app != TspServiceInfo.ServiceStatus.SERVED:
+            if obj.service_status_app != ServiceStatus.SERVED:
                 if data["tsp_service_status"] == "granted":
-                    obj.service_status_app = TspServiceInfo.ServiceStatus.NEW_NOT_SERVED
-                    obj.crl_url_status_app = TspServiceInfo.CrlUrlStatus.URL_UNDEFINED
+                    obj.service_status_app = ServiceStatus.NEW_NOT_SERVED
+                    obj.crl_url_status_app = CrlUrlStatus.URL_UNDEFINED
                 else:
-                    obj.service_status_app = TspServiceInfo.ServiceStatus.WITHDRAWN_NOT_SERVED
+                    obj.service_status_app = ServiceStatus.WITHDRAWN_NOT_SERVED
                 updated = True
 
         if updated:
@@ -193,7 +194,7 @@ class ServiceUpdater:
             crl_url=data["crl_url"],
             tsp_service_digital_id=data["tsp_service_digital_id"],
             service_status_app=self._get_initial_status(data),
-            crl_url_status_app=TspServiceInfo.CrlUrlStatus.URL_UNDEFINED,
+            crl_url_status_app=CrlUrlStatus.URL_UNDEFINED,
         )
 
         new_obj.save()
@@ -205,6 +206,6 @@ class ServiceUpdater:
     @staticmethod
     def _get_initial_status(data):
         if data["tsp_service_status"] == "granted":
-            return TspServiceInfo.ServiceStatus.NEW_NOT_SERVED
+            return ServiceStatus.NEW_NOT_SERVED
         else:
-            return TspServiceInfo.ServiceStatus.WITHDRAWN_NOT_SERVED
+            return ServiceStatus.WITHDRAWN_NOT_SERVED
