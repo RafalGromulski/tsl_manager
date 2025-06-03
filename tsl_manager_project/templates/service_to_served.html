@@ -1,35 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 {% load django_bootstrap5 %}
-{% block title %} TSL Manager - Usługi do obsłużenia {% endblock %}
+{% block title %}TSL Manager - Usługi do obsłużenia{% endblock %}
 {% block page_content %}
 <div class="container-fluid">
     <div class="jumbotron">
-        <p class="lead">Witaj: {{user.username}}
-            <a href="{% url 'logout' %}"
-               class="btn btn-danger btn-lg active mx-4"
-               role="button"
-               aria-pressed="true"
-               style="float: right;">Wyloguj
-                <i class="fas fa-sign-out-alt"></i></a>
-        </p>
+        {% include "includes/userbar.html" %}
         <h5 class="display-6 text-center mt-4 mb-5">Usługi do obsłużenia</h5>
-        <div class="col text-center">
-            <a href="{% url 'all_services' %}"
-               class="btn btn-dark ms-0 my-2"
-               role="button"
-               aria-pressed="true"
-               style="width:31%;">Wszystkie usługi</a>
-            <a href="{% url 'served_services' %}"
-               class="btn btn-dark mx-2 my-2"
-               role="button"
-               aria-pressed="true"
-               style="width:31%;">Usługi obsłużone</a>
-            <a href="{% url 'tsl_validity' %}"
-               class="btn btn-dark me-0 my-2"
-               role="button"
-               aria-pressed="true"
-               style="width:31%;">Statusy ważności TSL</a>
-        </div>
+        {% include "includes/navigation.html" %}
         <hr class="my-4">
     </div>
     <form action="" method="get" class="row row-cols-xl-4 g-4 align-items-center">
@@ -68,9 +46,11 @@
                     scope="row">
                     {{ forloop.counter }}
                     <a href="{% url 'service_details' service.id %}"
-                       data-toggle="tooltip"
-                       title="Więcej informacji o usłudze">
-                        <i class="bi bi-info-square" style="color:black"></i></a>
+                       data-bs-toggle="tooltip"
+                       title="Szczegóły usługi"
+                       aria-label="Szczegóły usługi">
+                        <i class="bi bi-info-square" style="color:black" aria-hidden="true"></i>
+                    </a>
                 </td>
                 <td class="align-middle"
                     style="word-wrap: break-word;width: 20%;white-space:normal;">
@@ -108,14 +88,18 @@
                     style="word-wrap: break-word;width: 3%;white-space:normal;">
                     {% if service.service_status_app != "Nie obsłużona (wycofana)" %}
                     <a href="{% url 'crl_url_form' service.id %}"
-                       data-toggle="tooltip"
-                       title="Wprowadź / edytuj / potwierdź CRL URL oraz obsłuż usługę">
-                        <i class="bi bi-pencil-square mx-2" style="color:black"></i></a>
+                       data-bs-toggle="tooltip"
+                       title="Wprowadź / edytuj / potwierdź CRL URL oraz obsłuż usługę"
+                       aria-label="Wprowadź / edytuj / potwierdź CRL URL oraz obsłuż usługę">
+                        <i class="bi bi-pencil-square mx-2" style="color:black" aria-hidden="true"></i>
+                    </a>
                     {% endif %}
                     <a href="{% url 'confirm_service' service.id %}"
-                       data-toggle="tooltip"
-                       title="Obsłuż usługę (bez zmiany oraz potwierdzenia CRL URL)">
-                        <i class="bi bi-check-square mx-2" style="color:black"></i></a>
+                       data-bs-toggle="tooltip"
+                       title="Obsłuż usługę (bez zmiany oraz potwierdzenia CRL URL)"
+                       aria-label="Obsłuż usługę">
+                        <i class="bi bi-check-square mx-2" style="color:black" aria-hidden="true"></i>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

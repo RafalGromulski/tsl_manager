@@ -1,19 +1,17 @@
 {% extends "base.html" %}
-{% block title %} TSL Manager App {% endblock %}
+{% load static %}
+{% block title %}TSL Manager{% endblock %}
 {% block page_content %}
-<div class="card border-0" style="width: 100%;">
-    <div class="card-body">
-        <a href="{% url 'login' %}"
-           class="btn btn-primary btn-lg active position-absolute top-0 end-0"
-           style="width: 10%;"
-           role="button"
-           aria-pressed="true">Login
-            <i class="fas fa-sign-in-alt"></i></a>
+<div>
+    <div class="card border-0" style="width: 100%;">
+        <div class="card-body">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg active position-absolute top-0 end-0" style="width: 10%;" role="button">
+                <i class="fas fa-sign-in-alt" aria-hidden="false"></i>
+                <span class="visually-hidden">Zaloguj się</span></a>
+        </div>
+        <h1 class="card-title text-center" style="font-size:60px;">TSL MANAGER</h1>
+        <img class="mx-auto d-block" style="width: 10%;" src="{% static 'RG.png' %}" alt="App Logo">
     </div>
-    <h1 class="card-title text-center" style=font-size:60px>TSL MANAGER</h1>
-    <img class="mx-auto d-block"
-         style="width: 10%;"
-         src="/media/RG.png"
-         alt="App Logo">
 </div>
+
 {% endblock %}

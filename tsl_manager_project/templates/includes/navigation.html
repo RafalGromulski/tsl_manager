@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
+<div class="col text-center">
+    <a href="{% url 'services_to_served' %}"
+       class="btn btn-dark ms-0 my-2"
+       role="button"
+       aria-pressed="true"
+       style="width:31%;">Usługi do obsłużenia</a>
 
-</body>
-</html>
+    <a href="{% url 'served_services' %}"
+       class="btn btn-dark mx-2 my-2"
+       role="button"
+       aria-pressed="true"
+       style="width:31%;">Usługi obsłużone</a>
+
+    <a href="{% url 'tsl_validity' %}"
+       class="btn btn-dark me-0 my-2"
+       role="button"
+       aria-pressed="true"
+       style="width:31%;">Statusy ważności TSL</a>
+</div>
