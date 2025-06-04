@@ -1,20 +1,26 @@
 {% load static %}
 <div class="col text-center">
+        <a href="{% url 'all_services' %}"
+       class="btn btn-dark ms-0 my-2"
+       role="button"
+       aria-pressed="true"
+       style="width:24%;">Wszystkie usługi</a>
+
     <a href="{% url 'services_to_served' %}"
        class="btn btn-dark ms-0 my-2"
        role="button"
        aria-pressed="true"
-       style="width:31%;">Usługi do obsłużenia</a>
+       style="width:24%;">Usługi do obsłużenia</a>
 
     <a href="{% url 'served_services' %}"
        class="btn btn-dark mx-2 my-2"
        role="button"
        aria-pressed="true"
-       style="width:31%;">Usługi obsłużone</a>
+       style="width:24%;">Usługi obsłużone</a>
 
     <a href="{% url 'tsl_validity' %}"
        class="btn btn-dark me-0 my-2"
        role="button"
        aria-pressed="true"
-       style="width:31%;">Statusy ważności TSL</a>
+       style="width:24%;">Statusy ważności TSL</a>
 </div>

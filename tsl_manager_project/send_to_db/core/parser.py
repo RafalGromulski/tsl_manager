@@ -1,3 +1,4 @@
+import binascii
 import logging
 import xml.dom.minidom as minidom
 from base64 import b64decode
@@ -5,16 +6,19 @@ from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 from urllib.parse import urlparse
 
-from send_to_db.core.constants import COUNTRIES_EN
+from send_to_db.core.constants import COUNTRIES_EN, CA_QC_URI
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class TSPService:
+    """
+    Data class representing a Trust Service Provider (TSP) service entry.
+    """
     country_code: str
     country_name: str
     tsp_name: str
@@ -30,10 +34,26 @@ class TSPService:
 
 
 class TSPServiceParser:
+    """
+    A parser class responsible for extracting TSPService information from XML files in a given directory.
+    """
+
     def __init__(self, directory: Path):
+        """
+        Initialize the parser with the given directory containing XML files.
+
+        Args:
+            directory (Path): Path to the directory with XML files.
+        """
         self.directory = directory
 
     def parse_all(self) -> List[TSPService]:
+        """
+        Parse all XML files in the specified directory.
+
+        Returns:
+            List[TSPService]: A list of parsed TSPService entries.
+        """
         all_services = []
         for file_path in self.directory.glob("*.xml"):
             try:
@@ -44,34 +64,51 @@ class TSPServiceParser:
         return all_services
 
     def _parse_file(self, path: Path) -> List[TSPService]:
+        """
+        Parse a single XML file and extract valid TSP services.
+
+        Args:
+            path (Path): Path to the XML file.
+
+        Returns:
+            List[TSPService]: A list of TSPService entries found in the file.
+        """
         result = []
         doc = minidom.parse(str(path))
 
         for tsp in doc.getElementsByTagNameNS("*", "TrustServiceProvider"):
             for service in tsp.getElementsByTagNameNS("*", "TSPService"):
                 try:
-                    service_type = service.getElementsByTagNameNS("*", "ServiceTypeIdentifier")[0].firstChild.nodeValue
-                    if service_type != "http://uri.etsi.org/TrstSvc/Svctype/CA/QC":
+                    service_type = self._get_text(service, "ServiceTypeIdentifier", default="")
+                    if service_type != CA_QC_URI:
                         continue
 
-                    service_status_uri = service.getElementsByTagNameNS("*", "ServiceStatus")[0].firstChild.nodeValue
+                    service_status_uri = self._get_text(service, "ServiceStatus", default="")
                     if urlparse(service_status_uri).path.split("/")[-1] != "granted":
                         continue
 
                     scheme = doc.getElementsByTagNameNS("*", "SchemeInformation")[0]
-                    country_code = scheme.getElementsByTagNameNS("*", "CountryName")[0].firstChild.nodeValue
+                    country_code = self._get_text(scheme, "CountryName")
                     country_name = COUNTRIES_EN.get(country_code, "Unknown")
 
                     tsp_name = tsp.getElementsByTagNameNS("*", "TSPName")[0].childNodes[1].firstChild.nodeValue.replace("'", "")
                     service_name = service.getElementsByTagNameNS("*", "ServiceName")[0].childNodes[1].firstChild.nodeValue.replace("'", "")
-                    start_date = datetime.fromisoformat(service.getElementsByTagNameNS("*", "StatusStartingTime")[0].firstChild.nodeValue)
+                    # start_date = datetime.fromisoformat(service.getElementsByTagNameNS("*", "StatusStartingTime")[0].firstChild.nodeValue)
 
-                    digital_id = ""
+                    start_date_str = self._get_text(service, "StatusStartingTime", default="")
                     try:
-                        cert = service.getElementsByTagNameNS("*", "X509Certificate")[0].firstChild.nodeValue
+                        start_date = datetime.fromisoformat(start_date_str)
+                    except ValueError as e:
+                        logger.warning(f"Invalid date format in {path.name}: {e}")
+                        # start_date = datetime.fromisoformat("1970-01-01T00:00:00")
+                        continue
+
+                    cert = self._get_text(service, "X509Certificate")
+                    try:
                         digital_id = sha256(b64decode(cert)).hexdigest()
-                    except Exception:
-                        pass
+                    except (binascii.Error, ValueError) as e:
+                        logger.warning(f"Invalid certificate format in {path.name}: {e}")
+                        digital_id = ""
 
                     tsp_url, crl_url = self._extract_urls(tsp, service)
                     result.append(TSPService(
@@ -92,7 +129,40 @@ class TSPServiceParser:
                     logger.warning(f"Error parsing service in {path.name}: {e}")
         return result
 
-    def _extract_urls(self, tsp, service):
+    @staticmethod
+    def _get_text(element: minidom.Element, tag_name: str, index: int = 0, default: str = "", namespace: str = "*") -> str:
+        """
+        Helper to extract text from an XML tag, safely.
+
+        Args:
+            element: XML element to search in.
+            tag_name: Name of the tag.
+            index: Index of the tag occurrence.
+            default: Default value if not found.
+            namespace: XML namespace (default '*').
+
+        Returns:
+            Text content or default.
+        """
+        try:
+            tag = element.getElementsByTagNameNS(namespace, tag_name)[index]
+            return tag.firstChild.nodeValue.strip()
+        except (IndexError, AttributeError):
+            logger.debug(f"Missing tag '{tag_name}' or structure in XML. Returning default: '{default}'")
+            return default
+
+    @staticmethod
+    def _extract_urls(tsp: minidom.Element, service: minidom.Element) -> Tuple[str, str]:
+        """
+        Extract TSP and CRL URLs from the given XML elements.
+
+        Args:
+            tsp: The TrustServiceProvider XML node.
+            service: The TSPService XML node.
+
+        Returns:
+            Tuple[str, str]: A tuple containing the TSP URL and CRL URL.
+        """
         tsp_url = ""
         crl_url = ""
 

@@ -12,7 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIRECTORY = BASE_DIR / "data" / "data1"
 
 
-async def main():
+async def main() -> None:
+    """
+    Asynchronously loads and parses TSP XML data, then inserts parsed services into the database.
+    """
     logger.info("Loading and parsing TSP XML data...")
 
     parser = TSPServiceParser(DATA_DIRECTORY)

@@ -1,3 +1,9 @@
+"""This module contains a dictionary mapping country codes to their English names.
+
+The country codes include EU member states and other European countries such as EFTA members.
+"""
+
+# Mapping of country codes to English country names
 COUNTRIES_EN = {
     "AT": "Austria",
     "BE": "Belgium",
@@ -33,3 +39,5 @@ COUNTRIES_EN = {
     "CH": "Switzerland",
     "UK": "United Kingdom",
 }
+
+CA_QC_URI = "http://uri.etsi.org/TrstSvc/Svctype/CA/QC"
