@@ -5,6 +5,11 @@ from .models import TspServiceInfo
 
 
 class MainViewFilter(FilterSet):
+    """
+    FilterSet used in the main view to enable filtering of TspServiceInfo records.
+    Provides filters by country, provider name, service name, CRL URL status, service status,
+    service type, and application handling status.
+    """
     country_name = AllValuesFilter(empty_label="Państwo...")
 
     tsp_name = CharFilter(label="Dostawca usługi...", lookup_expr="icontains")

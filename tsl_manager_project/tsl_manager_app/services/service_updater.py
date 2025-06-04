@@ -1,5 +1,4 @@
 import logging
-from typing import List
 
 from .tsl_parser import ParsedService
 from ..choices import ServiceStatus, CrlUrlStatus
@@ -13,12 +12,12 @@ class ServiceUpdater:
     Updates or creates TSP service records based on parsed data.
     """
 
-    def __init__(self, service_data_list: List[ParsedService]) -> None:
+    def __init__(self, service_data_list: list[ParsedService]) -> None:
         """
         Initialize the updater with parsed service data.
 
         Args:
-            service_data_list (List[ParsedService]): List of parsed TSP service entries.
+            service_data_list (list[ParsedService]): List of parsed TSP service entries.
         """
         self.service_data_list = service_data_list
 

@@ -1,6 +1,6 @@
-import asyncpg
 import logging
-from typing import List
+
+import asyncpg
 
 from send_to_db.config.config import load_config
 from send_to_db.core.parser import TSPService
@@ -8,12 +8,12 @@ from send_to_db.core.parser import TSPService
 logger = logging.getLogger(__name__)
 
 
-async def insert_services_to_db(services: List[TSPService]) -> None:
+async def insert_services_to_db(services: list[TSPService]) -> None:
     """
     Inserts a list of TSPService entries into the PostgreSQL database.
 
     Args:
-        services (List[TSPService]): A list of TSPService objects containing service details to be inserted.
+        services (list[TSPService]): A list of TSPService objects containing service details to be inserted.
 
     Raises:
         asyncpg.PostgresError: If a database error occurs during connection or execution.

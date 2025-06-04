@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
-from typing import List, Tuple
 from urllib.parse import urlparse
 
 from send_to_db.core.constants import COUNTRIES_EN, CA_QC_URI
@@ -47,12 +46,12 @@ class TSPServiceParser:
         """
         self.directory = directory
 
-    def parse_all(self) -> List[TSPService]:
+    def parse_all(self) -> list[TSPService]:
         """
         Parse all XML files in the specified directory.
 
         Returns:
-            List[TSPService]: A list of parsed TSPService entries.
+            list[TSPService]: A list of parsed TSPService entries.
         """
         all_services = []
         for file_path in self.directory.glob("*.xml"):
@@ -63,7 +62,7 @@ class TSPServiceParser:
                 logger.error(f"Failed to parse {file_path.name}: {e}")
         return all_services
 
-    def _parse_file(self, path: Path) -> List[TSPService]:
+    def _parse_file(self, path: Path) -> list[TSPService]:
         """
         Parse a single XML file and extract valid TSP services.
 
@@ -71,7 +70,7 @@ class TSPServiceParser:
             path (Path): Path to the XML file.
 
         Returns:
-            List[TSPService]: A list of TSPService entries found in the file.
+            list[TSPService]: A list of TSPService entries found in the file.
         """
         result = []
         doc = minidom.parse(str(path))
@@ -152,7 +151,7 @@ class TSPServiceParser:
             return default
 
     @staticmethod
-    def _extract_urls(tsp: minidom.Element, service: minidom.Element) -> Tuple[str, str]:
+    def _extract_urls(tsp: minidom.Element, service: minidom.Element) -> tuple[str, str]:
         """
         Extract TSP and CRL URLs from the given XML elements.
 
@@ -161,7 +160,7 @@ class TSPServiceParser:
             service: The TSPService XML node.
 
         Returns:
-            Tuple[str, str]: A tuple containing the TSP URL and CRL URL.
+            tuple[str, str]: A tuple containing the TSP URL and CRL URL.
         """
         tsp_url = ""
         crl_url = ""

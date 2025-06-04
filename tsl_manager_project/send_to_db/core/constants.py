@@ -4,7 +4,7 @@ The country codes include EU member states and other European countries such as 
 """
 
 # Mapping of country codes to English country names
-COUNTRIES_EN = {
+COUNTRIES_EN: dict[str, str] = {
     "AT": "Austria",
     "BE": "Belgium",
     "BG": "Bulgaria",

@@ -1,8 +1,7 @@
 from configparser import ConfigParser, MissingSectionHeaderError
-from typing import Dict
 
 
-def load_config(filename: str = "config/database.ini", section: str = "postgresql") -> Dict[str, str]:
+def load_config(filename: str = "config/database.ini", section: str = "postgresql") -> dict[str, str]:
     """
     Load configuration parameters from an INI file.
 
@@ -11,7 +10,7 @@ def load_config(filename: str = "config/database.ini", section: str = "postgresq
         section (str): Section of the configuration file to read. Defaults to "postgresql".
 
     Returns:
-        Dict[str, str]: A dictionary containing the key-value pairs from the specified section.
+        dict[str, str]: A dictionary containing the key-value pairs from the specified section.
 
     Raises:
         ValueError: If the configuration file is missing section headers or the specified section is not found.

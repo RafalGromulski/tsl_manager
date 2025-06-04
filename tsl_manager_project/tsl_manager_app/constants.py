@@ -1,4 +1,10 @@
-COUNTRIES_PL = {
+"""This module contains a dictionary mapping country codes to their Polish names.
+
+It includes EU member states as well as other European countries such as EFTA members.
+"""
+
+# Mapping of country codes to Polish country names
+COUNTRIES_PL: dict[str, str] = {
     "AT": "Austria",
     "BE": "Belgia",
     "BG": "Bułgaria",

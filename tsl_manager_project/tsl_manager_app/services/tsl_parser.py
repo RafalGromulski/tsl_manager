@@ -5,7 +5,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 from urllib.parse import urlparse
 from xml.dom.minidom import Element, parse as minidom_parse
 
@@ -34,23 +34,23 @@ class TslParser:
     Parser class for extracting TSP service data from XML files in a given directory.
     """
 
-    def __init__(self, directory_path: Path, countries: Dict[str, str]) -> None:
+    def __init__(self, directory_path: Path, countries: dict[str, str]) -> None:
         """
         Initializes the TSL parser.
 
         Args:
             directory_path (Path): Path to the directory containing XML files.
-            countries (Dict[str, str]): Mapping of country codes to country names.
+            countries (dict[str, str]): Mapping of country codes to country names.
         """
         self.directory_path = directory_path
         self.countries = countries
 
-    def parse_all(self) -> List[ParsedService]:
+    def parse_all(self) -> list[ParsedService]:
         """
         Parses all XML files in the directory.
 
         Returns:
-            List[ParsedService]: List of parsed service entries.
+            list[ParsedService]: List of parsed service entries.
         """
         services = []
         for xml_file in self.directory_path.glob("*.xml"):
@@ -61,7 +61,7 @@ class TslParser:
                 logger.error(f"Failed to parse {xml_file.name}: {e}")
         return services
 
-    def _parse_file(self, path: Path) -> List[ParsedService]:
+    def _parse_file(self, path: Path) -> list[ParsedService]:
         """
         Parses a single XML file and extracts TSP service entries.
 
@@ -69,7 +69,7 @@ class TslParser:
             path (Path): Path to the XML file.
 
         Returns:
-            List[ParsedService]: Extracted service data.
+            list[ParsedService]: Extracted service data.
         """
         result = []
         tsl = minidom_parse(str(path))
@@ -143,7 +143,7 @@ class TslParser:
             return default
 
     @staticmethod
-    def _extract_urls(tsp_node: Element, service_node: Element) -> Dict[str, str]:
+    def _extract_urls(tsp_node: Element, service_node: Element) -> dict[str, str]:
         """
         Extracts TSP and CRL URLs from the XML structure.
 
@@ -152,7 +152,7 @@ class TslParser:
             service_node (Element): TSP service XML node.
 
         Returns:
-            Dict[str, str]: Dictionary with 'tsp_url' and 'crl_url'.
+            dict[str, str]: Dictionary with 'tsp_url' and 'crl_url'.
         """
         tsp_url = ""
         crl_url = ""
