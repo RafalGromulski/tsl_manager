@@ -11,7 +11,8 @@ from .filters import MainViewFilter
 from .forms import CrlUrlForm
 from .models import TspServiceInfo, TslValidityInfo
 # from .serializers import TspServiceInfoSerializer
-from .services.tsl_parser import TslParser, ServiceUpdater
+from .services.tsl_parser import TslParser
+from .services.service_updater import ServiceUpdater
 
 
 class GreetingView(TemplateView):
@@ -127,13 +128,21 @@ class UpdateServicesView(LoginRequiredMixin, View):
 
     def post(self, request):
         parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
-        service_data = parser.tsl_parse()
+        parsed_services = parser.parse_all()
 
-        updater = ServiceUpdater(service_data)
+        updater = ServiceUpdater(parsed_services)
         updater.run()
 
         return redirect("services_to_served")
 
+    # def post(self, request):
+    #     parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
+    #     service_data = parser.tsl_parse()
+    #
+    #     updater = ServiceUpdater(service_data)
+    #     updater.run()
+    #
+    #     return redirect("services_to_served")
 
 # class TspServiceViewSet(viewsets.ModelViewSet):
 #     queryset = TspServiceInfo.objects.filter(crl_url__startswith="http")
