@@ -7,6 +7,8 @@ if [ -f .env ]; then
   set +a
 fi
 
+echo "Starting Django application setup..."
+
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
@@ -21,4 +23,5 @@ if not User.objects.filter(username="${DJANGO_SUPERUSER_USERNAME}").exists():
     )
 EOF
 
+echo "🚀 Launching Gunicorn server..."
 exec gunicorn tsl_manager_project.wsgi:application --bind 0.0.0.0:8000
