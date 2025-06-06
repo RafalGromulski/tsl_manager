@@ -1,0 +1,108 @@
+# =====================================
+# 🐍 Python: Compiled and build artifacts
+# =====================================
+__pycache__/
+*.py[cod]
+*.so
+
+# Build system outputs
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs and translations
+*.log
+*.pot
+
+# Local databases
+*.sqlite3
+*.db
+
+# =====================================
+# 🧪 Virtual environments
+# =====================================
+.env
+.env/
+.venv/
+env/
+venv/
+ENV/
+ENV.bak/
+venv.bak/
+
+# =====================================
+# 📦 Dependency managers
+# =====================================
+Pipfile.lock      # Pipenv
+poetry.lock       # Poetry
+
+# =====================================
+# 🌐 Django-specific files
+# =====================================
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+# Migrations (optional — track only if needed)
+# */migrations/
+# !*/migrations/__init__.py
+
+# =====================================
+# 🧪 Testing tools
+# =====================================
+.cache/             # pytest
+.pytest_cache/
+
+# =====================================
+# 🧠 Type checking and linting
+# =====================================
+.mypy_cache/
+.flake8
+
+# =====================================
+# 📈 Coverage reports
+# =====================================
+.coverage
+htmlcov/
+
+# =====================================
+# 📓 Jupyter notebooks
+# =====================================
+.ipynb_checkpoints/
+
+# =====================================
+# 🧰 Editor / IDE configs
+# =====================================
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# =====================================
+# 💻 OS-generated files
+# =====================================
+.DS_Store
+*.swp
+Thumbs.db
+
+# =====================================
+# 🐳 Docker / Docker Compose (dev use)
+# =====================================
+*.tar
+*.container
+
+# Ignore environment files, but keep examples
+.env              # only if not meant to be versioned
+.env.*
+!*.env.example
+
+.devcontainer/
+
+# =====================================
+# 🗃️ Database configuration (real, local-only)
+# =====================================
+database.ini
+!database.ini.example

@@ -1,0 +1,11 @@
+# =====================================
+# 🗃️ Example database config for Django
+# Copy this file to `database.ini` and fill in actual values.
+# =====================================
+
+[postgresql]
+host=your_host                  # e.g. db, 127.0.0.1, or service name in docker-compose
+database=your_database_name     # change to your database name
+user=your_user                  # change to your username
+password=your_password          # change to your password
+port=your_port                  # default PostgreSQL port
