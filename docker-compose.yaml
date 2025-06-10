@@ -1,15 +1,15 @@
 version: "3.6"
 
 services:
-  postgres_multiple_databases:
-    container_name: postgres_multiple_databases
+  postgres_database:
+    container_name: postgres_database
     image: postgres:15.4
     restart: always
     ports:
       - "5435:5432"
     volumes:
-      - ./tsl_crl_downloader/SQL/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-      - databases_data:/var/lib/postgresql/data
+#      - ./tsl_crl_downloader/SQL/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - database_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -17,7 +17,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready --dbname=crldatabase --username=postgres" ]
+      test: [ "CMD-SHELL", "pg_isready --dbname=crldatabase --username=postgres" ]  # TODO
       interval: 10s
       timeout: 5s
       retries: 10
@@ -25,7 +25,7 @@ services:
       - tsl_manager_network
 
   pgadmin:
-    container_name: pgadmin4
+    container_name: pgadmin
     image: dpage/pgadmin4:latest
     restart: always
     ports:
@@ -38,54 +38,45 @@ services:
     env_file:
       - .env
     depends_on:
-      postgres_multiple_databases:
+      postgres_database:
         condition: service_healthy
     networks:
       - tsl_manager_network
 
-  tsl_manager:
-    container_name: tsl_manager_app
+  tsl_manager_project:
+    container_name: tsl_manager_project
     build: ./tsl_manager_project
     restart: always
     ports:
       - "9000:8000"
     volumes:
-      - tsl_files:/code/tsl_crldownloader
+      - tsl_files:/code/tsl_manager_downloader
       - static:/code/static
       - media:/code/media
     depends_on:
-      postgres_multiple_databases:
+      postgres_database:
         condition: service_healthy
     networks:
       - tsl_manager_network
 
-  tsl_crl_downloader:
-    container_name: tsl_crl_downloader
-    build: ./tsl_crl_downloader
+  tsl_manager_downloader:
+    container_name: tsl_manager_downloader
+    build: ./tsl_manager_downloader
     restart: always
     volumes:
-      - ${CONFIGURATION_FILE}:/workdir/app/crl_downloader.config
-      - ${LOG_DIRECTORY}:/workdir/app/logs
-      - tsl_files:/workdir/app/tsl
-      - ${CERTS_DIRECTORY}:/workdir/app/certs
-      - ${GOOGLE_CLOUD_KEY}:/workdir/app/key/cencert-2974e1096f04_key.json
-    environment:
-      - CRL_DOWNLOADER_PERIOD_MINUTES=${CRL_PERIOD}
-      - TSL_DOWNLOADER_EXEC_TIME=${TSL_EXEC_TIME}
-      - TSL_DOWNLOADER_DIR=${TSL_DIR}
-      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_CREDENTIALS}
-      - TZ=${TIMEZONE}
+      - ${LOG_DIRECTORY}:/app/logs
+      - tsl_files:/app/tsl_downloads
     env_file:
       - .env
     depends_on:
-      postgres_multiple_databases:
+      postgres_database:
         condition: service_healthy
     networks:
       - tsl_manager_network
 
-  nginx:
+  tsl_manager_nginx:
     container_name: tsl_manager_nginx
-    build: ./nginx
+    build: ./tsl_manager_nginx
     restart: always
     ports:
       - "8080:8080"
@@ -93,7 +84,7 @@ services:
       - static:/static
       - media:/media
     depends_on:
-      - tsl_manager
+      - tsl_manager_project
     networks:
       - tsl_manager_network
 
@@ -107,9 +98,9 @@ volumes:
     name: static_volume
   media:
     name: media_volume
-  tsl_files:
-    name: tsl_files_volume
-  databases_data:
-    name: databases_data
+#  tsl_files:
+#    name: tsl_files_volume
+  database_data:
+    name: database_data
   pgadmin_data:
     name: pgadmin_data

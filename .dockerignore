@@ -1,28 +1,28 @@
 # =====================================
-# 📁 Root-level Docker ignore (Docker Compose context)
+# Root-level Docker ignore (Docker Compose context)
 # Ignore project-level files not needed in image builds
 # =====================================
 
 # =====================================
-# 🐙 Git and VCS
+# Git and VCS
 # =====================================
 .git/
 
 # =====================================
-# 🔐 Environment and secret files
+# Environment and secret files
 # =====================================
 .env
 .env.*
 !*.env.example     # Keep example env files for documentation
 
 # =====================================
-# 🧠 Linting, formatting and tooling configs
+# Linting, formatting and tooling configs
 # =====================================
 .flake8
 pyproject.toml     # Ignore if not used in build context
 
 # =====================================
-# 🧰 Editor and IDE settings
+# Editor and IDE settings
 # =====================================
 .vscode/
 .idea/
@@ -31,12 +31,12 @@ pyproject.toml     # Ignore if not used in build context
 *.iws
 
 # =====================================
-# 📓 Logs
+# Logs
 # =====================================
 *.log
 
 # =====================================
-# 💻 OS-specific system files
+# OS-specific system files
 # =====================================
 .DS_Store
 *.swp

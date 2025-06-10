@@ -2,13 +2,16 @@ import csv
 import logging
 import os
 import xml.etree.ElementTree as ElementTree
+from datetime import datetime
 
 import certifi
 import requests
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SAVE_FOLDER = os.path.join(BASE_DIR, "tsl_downloads")
-LOG_PATH = os.path.join(BASE_DIR, "log.csv")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_FILENAME = f"log_{datetime.now():%Y%m%d_%H%M%S}.csv"
+LOGS_PATH = os.path.join(LOG_DIR, LOG_FILENAME)
 LOTL_URL = "https://ec.europa.eu/tools/lotl/eu-lotl.xml"
 NAMESPACE = {"tsl": "http://uri.etsi.org/02231/v2#"}
 
@@ -176,8 +179,8 @@ def update_all_tsl_entries() -> list[dict[str, str]]:
 def main() -> None:
     """Entry point: downloads and logs all country TSL files."""
     log_rows = update_all_tsl_entries()
-    save_log(LOG_PATH, log_rows)
-    logging.info(f"Log saved to: {LOG_PATH}")
+    save_log(LOGS_PATH, log_rows)
+    logging.info(f"Log saved to: {LOGS_PATH}")
 
 
 if __name__ == "__main__":

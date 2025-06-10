@@ -1,12 +1,12 @@
 # =====================================
-# 🐍 Python: Bytecode and compiled files
+# Python: Bytecode and compiled files
 # =====================================
 __pycache__/
 *.py[cod]
 *.so
 
 # =====================================
-# 📦 Build artifacts
+# Build artifacts
 # =====================================
 *.egg-info/
 .eggs/
@@ -14,18 +14,18 @@ build/
 dist/
 
 # =====================================
-# 📓 Logs
+# Logs
 # =====================================
 *.log
 
 # =====================================
-# 🗃️ Local databases
+# Local databases
 # =====================================
 *.sqlite3
 *.db
 
 # =====================================
-# 🧪 Virtual environments
+# Virtual environments
 # =====================================
 .env
 .venv

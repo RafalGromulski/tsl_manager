@@ -1,22 +1,22 @@
 # =====================================
-# 📁 NGINX Docker context cleanup
+# NGINX Docker context cleanup
 # Only copy necessary config files into image
 # =====================================
 
 # =====================================
-# 📓 Logs
+# Logs
 # =====================================
 *.log
 
 # =====================================
-# 💻 System-generated files
+# System-generated files
 # =====================================
 .DS_Store
 *.swp
 Thumbs.db
 
 # =====================================
-# 🧰 Editor and IDE configs
+# Editor and IDE configs
 # =====================================
 .vscode/
 .idea/
@@ -25,12 +25,12 @@ Thumbs.db
 *.iws
 
 # =====================================
-# 🐙 Git metadata (if present in folder)
+# Git metadata (if present in folder)
 # =====================================
 .git/
 
 # =====================================
-# 🔐 Local environment files (just in case)
+# Local environment files (just in case)
 # =====================================
 .env
 .env.*

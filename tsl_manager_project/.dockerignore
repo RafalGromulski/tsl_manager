@@ -1,12 +1,12 @@
 # =====================================
-# 🐍 Python: Bytecode and compiled files
+# Python: Bytecode and compiled files
 # =====================================
 __pycache__/
 *.py[cod]
 *.so
 
 # =====================================
-# 📦 Build artifacts
+# Build artifacts
 # =====================================
 *.egg
 *.egg-info/
@@ -15,20 +15,20 @@ build/
 dist/
 
 # =====================================
-# 📓 Logs and translations
+# Logs and translations
 # =====================================
 *.log
 *.pot
 
 # =====================================
-# 🗃️ Local databases
+# Local databases
 # =====================================
 *.sqlite3
 *.db
 db.sqlite3
 
 # =====================================
-# 🧪 Virtual environments
+# Virtual environments
 # =====================================
 .env
 .env/
@@ -42,7 +42,7 @@ venv.bak/
 !*.env.example     # Keep example env files
 
 # =====================================
-# 🌐 Django-specific files
+# Django-specific files
 # =====================================
 local_settings.py
 media/
@@ -53,26 +53,26 @@ staticfiles/
 # !*/migrations/__init__.py
 
 # =====================================
-# 🧪 Test and cache files
+# Test and cache files
 # =====================================
 .cache/
 .pytest_cache/
 
 # =====================================
-# 🧠 Static analysis and linters
+# Static analysis and linters
 # =====================================
 .mypy_cache/
 .flake8
 pyproject.toml     # Ignore only if not needed in container
 
 # =====================================
-# 📈 Coverage reports
+# Coverage reports
 # =====================================
 .coverage
 htmlcov/
 
 # =====================================
-# 💻 Editor and IDE settings
+# Editor and IDE settings
 # =====================================
 .vscode/
 .idea/
@@ -81,18 +81,18 @@ htmlcov/
 *.iws
 
 # =====================================
-# 📓 Jupyter notebooks
+# Jupyter notebooks
 # =====================================
 .ipynb_checkpoints/
 
 # =====================================
-# 💻 System-generated files
+# System-generated files
 # =====================================
 .DS_Store
 *.swp
 Thumbs.db
 
 # =====================================
-# 🗃️ Database configuration (should not be in image)
+# Database configuration (should not be in image)
 # =====================================
 database.ini
