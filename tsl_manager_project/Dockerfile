@@ -1,5 +1,5 @@
-# Use the official slim Python 3.13 base image
-FROM python:3.13-slim
+# Use the official slim Python 3.11 base image
+FROM python:3.11-slim
 
 # Set environment variables to optimize Python behavior and pip:
 # - PYTHONUNBUFFERED: Ensures logs are sent straight to terminal (useful for debugging)

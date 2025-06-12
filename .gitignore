@@ -1,5 +1,5 @@
 # =====================================
-# 🐍 Python: Compiled and build artifacts
+# Python: Compiled and build artifacts
 # =====================================
 __pycache__/
 *.py[cod]
@@ -20,7 +20,7 @@ dist/
 *.db
 
 # =====================================
-# 🧪 Virtual environments
+# Virtual environments
 # =====================================
 .env
 .env/
@@ -32,7 +32,7 @@ ENV.bak/
 venv.bak/
 
 # =====================================
-# 📦 Dependency managers
+# Dependency managers
 # =====================================
 Pipfile.lock      # Pipenv
 poetry.lock       # Poetry
@@ -50,19 +50,20 @@ staticfiles/
 # !*/migrations/__init__.py
 
 # =====================================
-# 🧪 Testing tools
+# Testing tools
 # =====================================
 .cache/             # pytest
 .pytest_cache/
 
 # =====================================
-# 🧠 Type checking and linting
+# Type checking and linting
 # =====================================
 .mypy_cache/
 .flake8
+/pyproject.toml
 
 # =====================================
-# 📈 Coverage reports
+# Coverage reports
 # =====================================
 .coverage
 htmlcov/
@@ -73,7 +74,7 @@ htmlcov/
 .ipynb_checkpoints/
 
 # =====================================
-# 🧰 Editor / IDE configs
+# Editor / IDE configs
 # =====================================
 .vscode/
 .idea/
@@ -82,14 +83,14 @@ htmlcov/
 *.iws
 
 # =====================================
-# 💻 OS-generated files
+# OS-generated files
 # =====================================
 .DS_Store
 *.swp
 Thumbs.db
 
 # =====================================
-# 🐳 Docker / Docker Compose (dev use)
+# Docker / Docker Compose (dev use)
 # =====================================
 *.tar
 *.container
@@ -102,7 +103,9 @@ Thumbs.db
 .devcontainer/
 
 # =====================================
-# 🗃️ Database configuration (real, local-only)
+# Database configuration (real, local-only)
 # =====================================
 database.ini
 !database.ini.example
+/pgadmin/pgpass
+/pgadmin/servers.json

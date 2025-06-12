@@ -61,11 +61,13 @@ WSGI_APPLICATION = "tsl_manager_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB_NAME"),
+        "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        # "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         "HOST": os.getenv("POSTGRES_HOST"),
+        # "HOST": "postgres_database",
         "PORT": os.getenv("POSTGRES_PORT"),
+        # "PORT": "5432",
     }
 }
 

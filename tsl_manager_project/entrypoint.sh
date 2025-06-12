@@ -1,11 +1,6 @@
 #!/usr/bin/env sh
-set -e
 
-if [ -f .env ]; then
-  set -a
-  . .env || echo "Warning: Failed to load .env file"
-  set +a
-fi
+echo "Environment loaded via Docker Compose"
 
 echo "Starting Django application setup..."
 
