@@ -1,0 +1,43 @@
+Country,URL,Status,FileSaved
+AT,https://www.signatur.rtr.at/currenttl.xml,Success,Yes
+BE,https://tsl.belgium.be/tsl-be.xml,Success,Yes
+BG,https://crc.bg/files/_en/TSL_BG.pdf,Skipped (Content-Type: application/pdf),No
+BG,https://crc.bg/files/_en/TSL_BG.xml,Success,Yes
+CY,https://dec.dmrid.gov.cy/dmrid/dec/ws_dec.nsf/all/5064247FF4FC3DCCC2258506002EEA17/$file/TSL-CY-sign.xml,Error,No
+CZ,https://tsl.gov.cz/publ/TSL_CZ.pdf,Skipped (Content-Type: application/pdf),No
+CZ,https://tsl.gov.cz/publ/TSL_CZ.xtsl,Skipped (Content-Type: text/plain),No
+DE,https://tl.bundesnetzagentur.de/TL-DE.XML,Success,Yes
+DK,https://www.digst.dk/TSLDKpdf,Skipped (Content-Type: application/pdf),No
+DK,https://www.digst.dk/TSLDKxml,Success,Yes
+EE,https://sr.riik.ee/tsl/estonian-tsl.pdf,Skipped (Content-Type: application/pdf),No
+EE,https://sr.riik.ee/tsl/estonian-tsl.xml,Success,Yes
+EL,https://www.eett.gr/tsl/EL-TSL.xml,Success,Yes
+ES,https://sedediatid.mineco.gob.es/Prestadores/TSL/TSL.pdf,Skipped (Content-Type: application/pdf),No
+ES,https://sedediatid.mineco.gob.es/Prestadores/TSL/TSL.xml,Success,Yes
+FI,https://dp.trustedlist.fi/fi-tl.xml,Skipped (Content-Type: ),No
+FR,https://cyber.gouv.fr/sites/default/files/document/tl-fr.pdf,Skipped (Content-Type: application/pdf),No
+FR,https://cyber.gouv.fr/sites/default/files/document/tl-fr.xml,Success,Yes
+HR,https://gov.hr/UserDocsImages/Usluge%20povjerenja/Pouzdani_popis_RH.xml,Success,Yes
+HU,http://www.nmhh.hu/tl/pub/HU_TL.pdf,Skipped (Content-Type: application/pdf),No
+HU,http://www.nmhh.hu/tl/pub/HU_TL.xml,Success,Yes
+IE,https://eidas.gov.ie/Irelandtslsigned.xml,Success,Yes
+IS,https://tsl.fjarskiptastofa.is/library/skrar/tsl/tsl.pdf,Skipped (Content-Type: application/pdf),No
+IS,https://tsl.fjarskiptastofa.is/library/skrar/tsl/tsl.xml,Success,Yes
+IT,https://eidas.agid.gov.it/TL/TSL-IT.xml,Success,Yes
+LI,https://www.llv.li/files/ak/xml-llv-ak-tsl.xml,Success,Yes
+LT,https://elektroninisparasas.lt/LT-TSL.xml,Success,Yes
+LU,https://trusted-list.lu/tsl.pdf,Skipped (Content-Type: application/pdf),No
+LU,https://trusted-list.lu/tsl.xml,Success,Yes
+LV,https://trustlist.gov.lv/tsl/latvian-tsl.xml,Success,Yes
+MT,https://tsl.mca.org.mt/MT_TSL.xml,Success,Yes
+NL,https://www.rdi.nl/site/binaries/site-content/collections/documents/current-tsl.xml,Success,Yes
+NO,https://nkom.no/files/TSL/NO_TSL.pdf,Skipped (Content-Type: application/pdf),No
+NO,https://nkom.no/files/TSL/NO_TSL.xml,Success,Yes
+PL,https://www.nccert.pl/tsl/PL_TSL.xml,Success,Yes
+PT,https://www.gns.gov.pt/media/1891/TSLPTHR.pdf,Skipped (Content-Type: application/pdf),No
+PT,https://www.gns.gov.pt/media/1894/TSLPT.xml,Success,Yes
+RO,https://www.adr.gov.ro/trustedlist.xml,Success,Yes
+SE,https://trustedlist.pts.se/SE-TL.xml,Success,Yes
+SI,https://www.tl.gov.si/SI_TL.xml,Success,Yes
+SK,http://tl.nbu.gov.sk/kca/tsl/tsl.xml,Success,Yes
+UK,https://ec.europa.eu/tools/lotl/Final_EU_TSL-UKsigned.xml,Success,Yes

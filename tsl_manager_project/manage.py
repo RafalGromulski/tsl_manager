@@ -3,6 +3,9 @@
 import os
 import sys
 
+if os.environ.get("USE_DOTENV", "0") != "1":
+    from dotenv import load_dotenv
+    load_dotenv()
 
 def main():
     """Run administrative tasks."""

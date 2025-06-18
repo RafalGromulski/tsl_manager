@@ -1,5 +1,12 @@
-# Use the official slim Python 3.13 base image
-FROM python:3.13-slim
+# Use the official slim Python 3.11 base image
+FROM python:3.11-slim
+
+# Install system dependencies:
+# - ca-certificates: ensures HTTPS requests can verify SSL certificates
+# - cleanup removes unnecessary files to reduce image size
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables to optimize Python behavior and pip:
 # - PYTHONUNBUFFERED: Ensures logs are sent straight to terminal (useful for debugging)

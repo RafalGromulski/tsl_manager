@@ -3,6 +3,7 @@ import logging
 import os
 import xml.etree.ElementTree as ElementTree
 from datetime import datetime
+from requests.exceptions import SSLError
 
 import certifi
 import requests
@@ -88,13 +89,17 @@ def download_tsl_file(url: str, temp_path: str) -> bytes:
     Returns:
         The content of the downloaded file.
     """
-    response = requests.get(url, timeout=15, verify=certifi.where())
-    response.raise_for_status()
+    try:
+        response = requests.get(url, timeout=15, verify=certifi.where())
+        response.raise_for_status()
 
-    with open(temp_path, "wb") as f:
-        f.write(response.content)
+        with open(temp_path, "wb") as f:
+            f.write(response.content)
 
-    return response.content
+        return response.content
+    except SSLError as e:
+        logging.error(f"SSL error while downloading {url}: {e}")
+        raise
 
 
 def download_and_replace(url: str, save_folder: str, country_code: str) -> tuple[str, bool]:

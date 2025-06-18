@@ -107,5 +107,3 @@ Thumbs.db
 # =====================================
 database.ini
 !database.ini.example
-/pgadmin/pgpass
-/pgadmin/servers.json

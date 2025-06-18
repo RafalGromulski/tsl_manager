@@ -1,5 +1,5 @@
 # Use the official Nginx base image
-FROM nginx:latest
+FROM nginx:1.25.5
 
 # Set the working directory inside the container
 WORKDIR /etc/nginx
