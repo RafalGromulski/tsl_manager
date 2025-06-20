@@ -3,10 +3,13 @@ import logging
 import os
 import xml.etree.ElementTree as ElementTree
 from datetime import datetime
-from requests.exceptions import SSLError
 
 import certifi
 import requests
+import urllib3
+from requests.exceptions import SSLError
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SAVE_FOLDER = os.path.join(BASE_DIR, "tsl_downloads")
@@ -78,19 +81,20 @@ def is_valid_xml_content_type(content_type: str) -> bool:
     return "xml" in content_type.lower()
 
 
-def download_tsl_file(url: str, temp_path: str) -> bytes:
+def download_tsl_file(url: str, temp_path: str, verify_ssl: bool = True) -> bytes | None:
     """
-    Downloads a TSL file and saves it to a temporary path.
+    Downloads a TSL file from the given URL and saves it to a temporary path.
 
     Args:
         url: URL of the TSL file.
         temp_path: Temporary file path to save the downloaded content.
+        verify_ssl: Whether to verify the server's SSL certificate. Use False to disable verification.
 
     Returns:
-        The content of the downloaded file.
+        The content of the downloaded file if successful, or None in case of an SSL error.
     """
     try:
-        response = requests.get(url, timeout=15, verify=certifi.where())
+        response = requests.get(url, timeout=15, verify=certifi.where() if verify_ssl else False)
         response.raise_for_status()
 
         with open(temp_path, "wb") as f:
@@ -99,7 +103,7 @@ def download_tsl_file(url: str, temp_path: str) -> bytes:
         return response.content
     except SSLError as e:
         logging.error(f"SSL error while downloading {url}: {e}")
-        raise
+        return None
 
 
 def download_and_replace(url: str, save_folder: str, country_code: str) -> tuple[str, bool]:
@@ -108,36 +112,47 @@ def download_and_replace(url: str, save_folder: str, country_code: str) -> tuple
 
     Args:
         url: TSL file URL.
-        save_folder: Destination folder for saving XML.
+        save_folder: Destination folder for saving the XML file.
         country_code: Country code for the file name.
 
     Returns:
-        Tuple with status message and a boolean indicating success.
+        A tuple:
+            - status message ("Success", "SSL Error", "Download Error", etc.)
+            - boolean indicating whether the file was successfully saved.
     """
     final_path = os.path.join(save_folder, f"{country_code}.xml")
     temp_path = os.path.join(save_folder, f"{country_code}_new.xml")
 
     try:
-        head = requests.head(url, timeout=10, allow_redirects=True, verify=certifi.where())
+        # Disable SSL verification only for problematic domain (Cyprus)
+        verify_ssl = not url.startswith("https://dec.dmrid.gov.cy")
+        if not verify_ssl:
+            logging.warning(f"SSL verification disabled for {country_code} ({url})")
+
+        head = requests.head(url, timeout=10, allow_redirects=True, verify=certifi.where() if verify_ssl else False)
         content_type = head.headers.get("Content-Type", "")
 
         if not is_valid_xml_content_type(content_type):
             logging.warning(f"Skipped {country_code}: Content-Type is {content_type}")
             return f"Skipped (Content-Type: {content_type})", False
 
-        download_tsl_file(url, temp_path)
+        content = download_tsl_file(url, temp_path, verify_ssl)
+        if content is None:
+            return "SSL Error", False
+
         safely_replace_file(temp_path, final_path)
         logging.info(f"Updated {country_code}.xml")
         return "Success", True
 
     except requests.RequestException as e:
         logging.error(f"Download error {country_code}: {e}", exc_info=True)
+        return "Download Error", False
     except OSError as e:
         logging.error(f"File error {country_code}: {e}", exc_info=True)
-
-    if os.path.exists(temp_path):
-        os.remove(temp_path)
-    return "Error", False
+        return "File Error", False
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
 
 def save_log(log_path: str, rows: list[dict[str, str]]) -> None:
@@ -182,7 +197,12 @@ def update_all_tsl_entries() -> list[dict[str, str]]:
 
 
 def main() -> None:
-    """Entry point: downloads and logs all country TSL files."""
+    """
+    Entry point: downloads and logs all country TSL files.
+
+    Ensures the logs directory exists, processes TSL entries, and writes the log to CSV.
+    """
+    os.makedirs(LOG_DIR, exist_ok=True)
     log_rows = update_all_tsl_entries()
     save_log(LOGS_PATH, log_rows)
     logging.info(f"Log saved to: {LOGS_PATH}")

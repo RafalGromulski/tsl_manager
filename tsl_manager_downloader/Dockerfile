@@ -2,10 +2,14 @@
 FROM python:3.11-slim
 
 # Install system dependencies:
-# - ca-certificates: ensures HTTPS requests can verify SSL certificates
+# - ca-certificates: required for SSL verification in HTTPS requests
+# - curl: optional tool for diagnostics or healthchecks
+# - update-ca-certificates: ensures certificates are current
 # - cleanup removes unnecessary files to reduce image size
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
+    curl \
+    && update-ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables to optimize Python behavior and pip:
@@ -25,7 +29,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Upgrade pip and install dependencies
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY . .
