@@ -8,6 +8,7 @@ __pycache__/
 # =====================================
 # Build artifacts
 # =====================================
+*.egg
 *.egg-info/
 .eggs/
 build/
@@ -17,20 +18,52 @@ dist/
 # Logs
 # =====================================
 *.log
+logs/*
+!logs/.gitkeep
 
 # =====================================
 # Local databases
 # =====================================
 *.sqlite3
 *.db
+db.sqlite3
 
 # =====================================
 # Virtual environments
 # =====================================
-.env
-.venv
+.env.*
 env/
+.venv/
 venv/
 ENV/
 ENV.bak/
 venv.bak/
+!*.env.example     # Keep environment file examples
+
+# =====================================
+# OS-specific files
+# =====================================
+.DS_Store
+Thumbs.db
+
+# =====================================
+# Editor/IDE configurations
+# =====================================
+.vscode/
+.idea/
+
+# =====================================
+# Testing artifacts
+# =====================================
+.cache/
+
+# =====================================
+# Test suite (excluded from Docker image)
+# =====================================
+tests/
+
+# =====================================
+# Other excluded data folders (only contents)
+# =====================================
+tsl_downloads/*
+!tsl_downloads/.gitkeep

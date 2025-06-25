@@ -2,10 +2,10 @@
 FROM python:3.11-slim
 
 # Install system dependencies:
-# - ca-certificates: required for SSL verification in HTTPS requests
-# - curl: optional tool for diagnostics or healthchecks
-# - update-ca-certificates: ensures certificates are current
-# - cleanup removes unnecessary files to reduce image size
+# - ca-certificates: required for SSL verification (HTTPS)
+# - curl: useful for diagnostics or healthchecks
+# - procps: provides tools like ps/top (useful for debugging or monitoring)
+# - Clean up afterwards to reduce image size
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl procps &&  \
     update-ca-certificates &&  \
@@ -24,27 +24,22 @@ ENV PYTHONUNBUFFERED=1 \
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy only the dependency definition file first for efficient Docker layer caching
+# Copy Python dependencies from requirements file
+# Keeping this in a separate layer helps Docker cache it effectively
 COPY requirements.in .
 
 # Upgrade pip, Install pip-tools, compile requirements.txt, and install dependencies
+# Uninstall pip-tools after build to reduce image size
 RUN pip install --no-cache-dir --upgrade pip pip-tools && \
     pip-compile requirements.in && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt &&  \
+    pip uninstall -y pip-tools
 
-# Copy the rest of the application code
+# Copy the rest of the application source code into the container
 COPY . .
 
-# Copy the custom entrypoint script and ensure it is executable
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-# Create a non-root user for security
-RUN adduser --disabled-password --gecos '' --home /app celeryuser &&  \
-    chown -R celeryuser:celeryuser /app
-
-# Switch to the non-root user
-USER celeryuser
+# Ensure the entrypoint script is executable
+RUN chmod +x ./entrypoint.sh
 
 # Set the container entrypoint to the custom script
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
