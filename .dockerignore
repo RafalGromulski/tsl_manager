@@ -1,28 +1,91 @@
 # =====================================
-# Root-level Docker ignore (Docker Compose context)
+# 📦 Root-level .dockerignore (Docker Compose context)
 # Ignore project-level files not needed in image builds
 # =====================================
 
 # =====================================
-# Git and VCS
+# 🔀 Git and version control
 # =====================================
 .git/
+.gitignore
+.gitattributes
 
 # =====================================
-# Environment and secret files
+# 🐍 Python: Bytecode and compiled files
+# =====================================
+__pycache__/
+*.py[cod]
+*.so
+
+# =====================================
+# 📦 Build artifacts
+# =====================================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =====================================
+# 🗒️ Logs and temporary files
+# =====================================
+*.log
+*.tmp
+*.pot
+*.bak
+
+# =====================================
+# 🗄️ Local databases
+# =====================================
+*.sqlite3
+*.db
+
+# =====================================
+# 🧪 Virtual environments
+# =====================================
+.env/
+.venv/
+env/
+venv/
+ENV/
+ENV.bak/
+venv.bak/
+
+# =====================================
+# 🔐 Environment and secret files
 # =====================================
 .env
 .env.*
 !*.env.example     # Keep example env files for documentation
 
 # =====================================
-# Linting, formatting and tooling configs
+# 🧪 Testing tools and artifacts
+# =====================================
+tests/
+.pytest_cache/
+.cache/
+pytest.ini
+
+# =====================================
+# 🧹 Type checking and linting
 # =====================================
 .flake8
 pyproject.toml     # Ignore if not used in build context
+.mypy_cache/
 
 # =====================================
-# Editor and IDE settings
+# 📊 Coverage reports
+# =====================================
+.coverage
+htmlcov/
+
+# =====================================
+# 📓 Jupyter notebooks
+# =====================================
+*.ipynb
+.ipynb_checkpoints/
+
+# =====================================
+# 🧠 Editor and IDE configs
 # =====================================
 .vscode/
 .idea/
@@ -31,13 +94,18 @@ pyproject.toml     # Ignore if not used in build context
 *.iws
 
 # =====================================
-# Logs
-# =====================================
-*.log
-
-# =====================================
-# OS-specific system files
+# 💻 System-generated files
 # =====================================
 .DS_Store
 *.swp
 Thumbs.db
+*~
+
+# =====================================
+# 🐳 Docker / Docker Compose (dev use)
+# =====================================
+docker-compose_old.yaml
+docker-compose_xcommon.yaml
+*.tar
+*.container
+.devcontainer/

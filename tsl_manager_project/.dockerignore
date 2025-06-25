@@ -1,80 +1,105 @@
 # =====================================
-# Python: Bytecode and compiled files
+# 🐳 Docker ignore for tsl_manager_project
+# Exclude local, development, and test files from Docker build context
+# =====================================
+
+# =====================================
+# 🔀 Git and version control
+# =====================================
+.git/
+.gitignore
+.gitattributes
+
+# =====================================
+# 🐍 Python: Bytecode and compiled files
 # =====================================
 __pycache__/
 *.py[cod]
 *.so
 
 # =====================================
-# Build artifacts
+# 📦 Build artifacts
 # =====================================
-*.egg
-*.egg-info/
-.eggs/
 build/
 dist/
+*.egg-info/
+.eggs/
 
 # =====================================
-# Logs and translations
+# 🗒️ Logs and temporary files
 # =====================================
 *.log
+*.tmp
 *.pot
+*.bak
 
 # =====================================
-# Local databases
+# 🗄️ Local databases
 # =====================================
 *.sqlite3
 *.db
-db.sqlite3
 
 # =====================================
-# Virtual environments
+# 🧪 Virtual environments
 # =====================================
-.env.*
-env/
+.env/
 .venv/
+env/
 venv/
 ENV/
 ENV.bak/
 venv.bak/
-!*.env.example     # Keep environment file examples
 
 # =====================================
-# Django-specific files
+# 🔐 Environment and secret files
+# =====================================
+.env
+.env.*
+!*.env.example     # Keep example env files for documentation
+
+# =====================================
+# 🌐 Django-specific files
 # =====================================
 local_settings.py
+db.sqlite3
 media/
 staticfiles/
-# Optional: Ignore Django migrations if auto-generated
-# */migrations/
-# !*/migrations/__init__.py
 
 # =====================================
-# Test artifacts
+# 🧬 Migrations (optional)
 # =====================================
-pytest.ini
-.pytest_cache/
+#**/migrations/*.py[cod]
+#!**/migrations/__init__.py
 
 # =====================================
-# Caches and static analysis
-# =====================================
-.cache/
-.mypy_cache/
-.flake8
-
-# =====================================
-# Test suite (excluded from Docker image)
+# 🧪 Testing tools and artifacts
 # =====================================
 tests/
+.pytest_cache/
+.cache/
+pytest.ini
 
 # =====================================
-# Coverage reports
+# 🧹 Type checking and linting
+# =====================================
+.flake8
+pyproject.toml     # Ignore if not used in build context
+.mypy_cache/
+
+# =====================================
+# 📊 Coverage reports
 # =====================================
 .coverage
 htmlcov/
 
 # =====================================
-# Editor and IDE settings
+# 📓 Jupyter notebooks
+# =====================================
+*.ipynb
+.ipynb_checkpoints/
+
+# =====================================
+# 🧠 Editor and IDE configs
 # =====================================
 .vscode/
 .idea/
@@ -83,19 +108,15 @@ htmlcov/
 *.iws
 
 # =====================================
-# Jupyter notebooks
-# =====================================
-.ipynb_checkpoints/
-
-# =====================================
-# System-generated files
+# 💻 System-generated files
 # =====================================
 .DS_Store
-Thumbs.db
 *.swp
+Thumbs.db
 
 # =====================================
-# Project-specific configuration
+# ⚙️ Project-specific configuration
 # =====================================
 database.ini
-pyproject.toml     # Ignore only if not used in container
+!database.ini.example
+pyproject.toml

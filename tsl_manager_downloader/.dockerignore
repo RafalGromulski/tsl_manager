@@ -1,69 +1,109 @@
 # =====================================
-# Python: Bytecode and compiled files
+# 🐳 Docker ignore for tsl_manager_downloader
+# Exclude local, development, and test files from Docker build context
+# =====================================
+
+# =====================================
+# 🔀 Git and version control
+# =====================================
+.git/
+.gitignore
+.gitattributes
+
+# =====================================
+# 🐍 Python: Bytecode and compiled files
 # =====================================
 __pycache__/
 *.py[cod]
 *.so
 
 # =====================================
-# Build artifacts
+# 📦 Build artifacts
 # =====================================
-*.egg
-*.egg-info/
-.eggs/
 build/
 dist/
+*.egg-info/
+.eggs/
 
 # =====================================
-# Logs
+# 🗒️ Logs and temporary files
 # =====================================
 *.log
+*.tmp
+*.pot
+*.bak
 logs/*
 !logs/.gitkeep
 
 # =====================================
-# Local databases
+# 🗄️ Local databases
 # =====================================
 *.sqlite3
 *.db
-db.sqlite3
 
 # =====================================
-# Virtual environments
+# 🧪 Virtual environments
 # =====================================
-.env.*
-env/
+.env/
 .venv/
+env/
 venv/
 ENV/
 ENV.bak/
 venv.bak/
-!*.env.example     # Keep environment file examples
 
 # =====================================
-# OS-specific files
+# 🔐 Environment and secret files
 # =====================================
-.DS_Store
-Thumbs.db
+.env
+.env.*
+!*.env.example     # Keep example env files for documentation
 
 # =====================================
-# Editor/IDE configurations
+# 🧪 Testing tools and artifacts
+# =====================================
+tests/
+.pytest_cache/
+.cache/
+pytest.ini
+
+# =====================================
+# 🧹 Type checking and linting
+# =====================================
+.flake8
+pyproject.toml     # Ignore if not used in build context
+.mypy_cache/
+
+# =====================================
+# 📊 Coverage reports
+# =====================================
+.coverage
+htmlcov/
+
+# =====================================
+# 📓 Jupyter notebooks
+# =====================================
+*.ipynb
+.ipynb_checkpoints/
+
+# =====================================
+# 🧠 Editor and IDE configs
 # =====================================
 .vscode/
 .idea/
+*.iml
+*.ipr
+*.iws
 
 # =====================================
-# Testing artifacts
+# 💻 System-generated files
 # =====================================
-.cache/
+.DS_Store
+*.swp
+Thumbs.db
 
 # =====================================
-# Test suite (excluded from Docker image)
-# =====================================
-tests/
-
-# =====================================
-# Other excluded data folders (only contents)
+# 🧪 Miscellaneous
 # =====================================
 tsl_downloads/*
 !tsl_downloads/.gitkeep
