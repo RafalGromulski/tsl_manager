@@ -11,11 +11,10 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install system dependencies (optional: uncomment if cron is required)
-#RUN apt-get update  \
-#    && apt-get install -y cron  \
-#    && apt-get clean  \
-#    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update  \
+    && apt-get install -y curl  \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create required directories for application runtime
 # - /code/tsl_manager_downloader/data: application-specific storage

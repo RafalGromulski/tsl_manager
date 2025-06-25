@@ -22,6 +22,20 @@ services:
       timeout: 5s
       retries: 10
 
+  redis:
+    container_name: tsl_manager_redis
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - tsl_manager_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
   tsl_manager_pgadmin:
     container_name: tsl_manager_pgadmin
     image: dpage/pgadmin4:8.6
@@ -29,7 +43,7 @@ services:
       - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-      - ./tsl_manager_pgadmin/config_local.py:/pgadmin4/config_local.py
+      - ./tsl_manager_pgadmin/config_local.py:/pgadmin4/config_local.py:ro
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
@@ -61,6 +75,11 @@ services:
     networks:
       - tsl_manager_network
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   tsl_manager_downloader:
     container_name: tsl_manager_downloader
@@ -69,7 +88,48 @@ services:
       - logs:/app/logs
       - tsl_files:/app/tsl_downloads
     depends_on:
-      postgres_database:
+      redis:
+        condition: service_healthy
+    networks:
+      - tsl_manager_network
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "celery -A tasks inspect ping || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  tsl_manager_beat:
+    container_name: tsl_manager_beat
+    build: ./tsl_manager_downloader
+    command: celery -A tasks beat --loglevel=info --schedule /app/celerybeat-data/schedule.db
+    volumes:
+      - beat_data:/app/celerybeat-data
+    depends_on:
+      redis:
+        condition: service_healthy
+      tsl_manager_downloader:
+        condition: service_healthy
+    networks:
+      - tsl_manager_network
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "ps aux | grep '[c]elery beat' || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  flower:
+    container_name: tsl_manager_flower
+    build: ./tsl_manager_downloader
+    command: celery -A celery_app:app flower --loglevel=debug --port=5555
+#    command: celery --broker=redis://redis:6379/0 flower
+    ports:
+      - "5555:5555"
+    depends_on:
+      redis:
+        condition: service_healthy
+      tsl_manager_downloader:
         condition: service_healthy
     networks:
       - tsl_manager_network
@@ -107,3 +167,5 @@ volumes:
     name: database_data
   pgadmin_data:
     name: pgadmin_data
+  beat_data:
+    name: beat_data

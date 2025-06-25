@@ -1,0 +1,4 @@
+celery[redis,beat]
+requests
+certifi
+flower
