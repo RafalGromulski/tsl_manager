@@ -1,0 +1,6 @@
+Django
+django-bootstrap5
+django-filter
+gunicorn
+psycopg2-binary
+asyncpg

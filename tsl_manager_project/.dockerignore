@@ -30,16 +30,14 @@ db.sqlite3
 # =====================================
 # Virtual environments
 # =====================================
-.env
-.env/
-.venv/
+.env.*
 env/
+.venv/
 venv/
 ENV/
 ENV.bak/
 venv.bak/
-.env.*
-!*.env.example     # Keep example env files
+!*.env.example     # Keep environment file examples
 
 # =====================================
 # Django-specific files
@@ -47,23 +45,27 @@ venv.bak/
 local_settings.py
 media/
 staticfiles/
-
 # Optional: Ignore Django migrations if auto-generated
 # */migrations/
 # !*/migrations/__init__.py
 
 # =====================================
-# Test and cache files
+# Test artifacts
 # =====================================
-.cache/
+pytest.ini
 .pytest_cache/
 
 # =====================================
-# Static analysis and linters
+# Caches and static analysis
 # =====================================
+.cache/
 .mypy_cache/
 .flake8
-pyproject.toml     # Ignore only if not needed in container
+
+# =====================================
+# Test suite (excluded from Docker image)
+# =====================================
+tests/
 
 # =====================================
 # Coverage reports
@@ -89,10 +91,11 @@ htmlcov/
 # System-generated files
 # =====================================
 .DS_Store
-*.swp
 Thumbs.db
+*.swp
 
 # =====================================
-# Database configuration (should not be in image)
+# Project-specific configuration
 # =====================================
 database.ini
+pyproject.toml     # Ignore only if not used in container

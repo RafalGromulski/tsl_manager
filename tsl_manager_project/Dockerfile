@@ -1,6 +1,14 @@
 # Use the official slim Python 3.11 base image
 FROM python:3.11-slim
 
+# Install system dependencies
+# - curl: useful for diagnostics or healthchecks
+# - procps: provides tools like ps/top (useful for debugging or monitoring)
+# - Clean up afterwards to reduce image size
+RUN apt-get update && apt-get install -y --no-install-recommends  \
+    curl procps &&  \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Set environment variables to optimize Python behavior and pip:
 # - PYTHONUNBUFFERED: Ensures logs are sent straight to terminal (useful for debugging)
 # - PYTHONDONTWRITEBYTECODE: Prevents creation of .pyc files, keeping the image cleaner
@@ -11,30 +19,19 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install system dependencies
-RUN apt-get update  \
-    && apt-get install -y curl  \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create required directories for application runtime
-# - /code/tsl_manager_downloader/data: application-specific storage
-# - /var/log: system log directory
-# - Create empty log files for Django and cron
-RUN mkdir -p /code/tsl_manager_downloader/data &&  \
-    mkdir -p /var/log  \
-    && touch /var/log/django_cron.log /var/log/cron.log
-
-# Define a mount point for persistent data storage (optional, currently commented out)
-# VOLUME /code/tsl_crldownloader/data
-
 # Set the working directory inside the container
 WORKDIR /code
 
-# Copy and install Python dependencies from requirements file
+# Copy Python dependencies from requirements file
 # Keeping this in a separate layer helps Docker cache it effectively
-COPY requirements.txt .
-RUN pip install --upgrade pip  \
-    && pip install --no-cache-dir -r requirements.txt
+COPY requirements.in .
+
+# Upgrade pip, Install pip-tools, compile requirements.txt, and install dependencies
+# Uninstall pip-tools after build to reduce image size
+RUN pip install --no-cache-dir --upgrade pip pip-tools && \
+    pip-compile requirements.in && \
+    pip install --no-cache-dir -r requirements.txt &&  \
+    pip uninstall -y pip-tools
 
 # Copy the rest of the application source code into the container
 COPY . .

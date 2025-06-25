@@ -2,6 +2,9 @@
 
 echo "Environment loaded via Docker Compose"
 
+echo "📁 Ensuring /code/tsl_downloads exists..."
+mkdir -p /code/tsl_downloads
+
 echo "Starting Django application setup..."
 
 python manage.py migrate --noinput
@@ -18,5 +21,5 @@ if not User.objects.filter(username="${DJANGO_SUPERUSER_USERNAME}").exists():
     )
 EOF
 
-echo "🚀 Launching Gunicorn server..."
+echo "🚀 Django setup complete. Starting production server..."
 exec gunicorn tsl_manager_project.wsgi:application --bind 0.0.0.0:8000
