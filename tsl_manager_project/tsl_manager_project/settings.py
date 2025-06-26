@@ -1,28 +1,44 @@
+"""
+Django settings for tsl_manager_project.
+This file contains configuration for the Django framework and is designed
+to be environment-agnostic. Environment variables are used for all sensitive data.
+"""
+
 import os
 from pathlib import Path
 
+# === BASE DIRECTORY ===
+# Project root directory (used for building paths)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# === SECURITY SETTINGS ===
+# Security key for cryptographic signing - keep this secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+# Debug mode should be disabled in production environments
 DEBUG = os.getenv("DEBUG") == "True"
 
+# Hosts allowed to connect to the server
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
+# === APPLICATIONS ===
 INSTALLED_APPS = [
+    # Default Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-party apps
     "django_bootstrap5",
     "django_filters",
-    # "django_crontab",
     # "rest_framework",
+    # Local apps
     "tsl_manager_app",
 ]
 
+# === MIDDLEWARE ===
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -33,12 +49,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# === URL CONFIGURATION ===
 ROOT_URLCONF = "tsl_manager_project.urls"
 
+# === TEMPLATES ===
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],  # Global templates directory
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -50,8 +68,10 @@ TEMPLATES = [
     },
 ]
 
+# === WSGI CONFIGURATION ===
 WSGI_APPLICATION = "tsl_manager_project.wsgi.application"
 
+# === DATABASE CONFIGURATION ===
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -59,49 +79,43 @@ DATABASES = {
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         # "HOST": os.getenv("POSTGRES_HOST"),
-        "HOST": "postgres_database",
         # "PORT": os.getenv("POSTGRES_PORT"),
+        "HOST": "postgres_database",
         "PORT": "5432",
     }
 }
-
+# === PASSWORD VALIDATION ===
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# === INTERNATIONALIZATION ===
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "Europe/Warsaw"
-
 USE_I18N = True
-
 USE_TZ = True
 
+# === STATIC & MEDIA FILES ===
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "static"
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# === DEFAULT FIELD CONFIGURATION ===
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# === AUTHENTICATION REDIRECTS ===
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "services_to_served"
 LOGOUT_REDIRECT_URL = "greeting_view"
 
+# === CUSTOM PROJECT PATHS ===
 DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "data1"
 
+# === DJANGO BOOTSTRAP 5 CONFIGURATION ===
 BOOTSTRAP5 = {
     "css_url": None,
     "javascript_url": None,
