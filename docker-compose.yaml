@@ -33,7 +33,7 @@ services:
       - tsl_manager_network
     restart: always
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -61,8 +61,6 @@ services:
   tsl_manager_project:
     container_name: tsl_manager_project
     build: ./tsl_manager_project
-    ports:
-      - "9000:8000"
     volumes:
       - tsl_files:/code/tsl_downloads
       - static:/code/static
@@ -78,7 +76,7 @@ services:
       - tsl_manager_network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/ || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -86,6 +84,7 @@ services:
   tsl_manager_downloader:
     container_name: tsl_manager_downloader
     build: ./tsl_manager_downloader
+    command: celery -A celery_app worker --loglevel=info -E --hostname=downloader@%h -Q tsl
     volumes:
       - tsl_files:/app/tsl_downloads
       - logs:/app/logs
@@ -96,16 +95,15 @@ services:
       - tsl_manager_network
     restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "celery -A tasks inspect ping || exit 1" ]
+      test: [ "CMD-SHELL", "celery -A celery_app inspect ping || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 5
-    user: "1000:1000"
 
   tsl_manager_beat:
     container_name: tsl_manager_beat
     build: ./tsl_manager_downloader
-    command: celery -A tasks beat --loglevel=info --schedule /app/celerybeat-data/schedule.db
+    command: celery -A celery_app beat --loglevel=info --schedule /app/celerybeat-data/schedule.db
     volumes:
       - beat_data:/app/celerybeat-data
     depends_on:
@@ -125,8 +123,7 @@ services:
   flower:
     container_name: tsl_manager_flower
     build: ./tsl_manager_downloader
-    command: celery -A celery_app:app flower --loglevel=debug --port=5555
-#    command: celery --broker=redis://redis:6379/0 flower
+    command: celery -A celery_app flower --loglevel=info --port=5555
     ports:
       - "5555:5555"
     depends_on:
@@ -137,6 +134,11 @@ services:
     networks:
       - tsl_manager_network
     restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:5555/ || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   tsl_manager_nginx:
     container_name: tsl_manager_nginx
@@ -173,4 +175,4 @@ volumes:
   beat_data:
     name: beat_data
   redis_data:
-    name: redia_data
+    name: redis_data

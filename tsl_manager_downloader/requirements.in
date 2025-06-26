@@ -1,4 +1,4 @@
 celery[redis,beat]
 requests
 certifi
-flower
+flower==2.0.1

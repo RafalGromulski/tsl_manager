@@ -38,8 +38,5 @@ RUN pip install --no-cache-dir --upgrade pip pip-tools && \
 # Copy the rest of the application source code into the container
 COPY . .
 
-# Ensure the entrypoint script is executable
-RUN chmod +x ./entrypoint.sh
-
-# Set the container entrypoint to the custom script
-ENTRYPOINT ["./entrypoint.sh"]
+# Adding directories for Celery
+RUN mkdir -p /app/logs /app/tsl_downloads /app/celerybeat-data
