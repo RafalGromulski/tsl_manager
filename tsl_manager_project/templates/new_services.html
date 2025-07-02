@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 {% load django_bootstrap5 %}
-{% block title %}TSL Manager - All Services{% endblock %}
+{% block title %}TSL Manager - New Services{% endblock %}
 {% block page_content %}
 {% include "includes/navigation.html" %}
 <div class="container py-4">
-    <h2 class="fw-semibold text-primary mb-4">All Services</h2>
+    <h2 class="fw-semibold text-primary mb-4">New Services</h2>
 
     <div class="card shadow-sm mb-4 p-4">
         <form action="" method="get" class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
             {% bootstrap_form my_filter.form show_label=skip layout="inline" %}
             {% bootstrap_button "Search" button_type="submit" button_class="btn btn-outline-primary mx-2" style="width:150px" %}
             {% if my_filter.is_bound %}
-            <a href="{% url 'all_services' %}" class="btn btn-outline-primary mx-2" role="button" style="width:150px">
+            <a href="{% url 'new_services' %}" class="btn btn-outline-primary mx-2" role="button" style="width:150px">
                 Clear filters
             </a>
             {% endif %}

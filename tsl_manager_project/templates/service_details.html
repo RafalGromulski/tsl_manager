@@ -1,56 +1,124 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
-{% block title %}TSL Manager - Szczegóły usługi{% endblock %}
+{% block title %}TSL Manager - Service Details{% endblock %}
 {% block page_content %}
-<div class="container-fluid">
-    <div class="jumbotron">
-        <button type="button"
-                class="btn btn-dark"
-                aria-pressed="true"
-                onClick="history.back();"
-                style="width:8%;">
-            <i class="bi bi-arrow-return-left"></i> Powrót
-        </button>
-        <h5 class="display-6 text-center mb-5">Szczegóły usługi: {{ tsp_service.tsp_service_name }}</h5>
-        <hr class="my-4">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-semibold text-primary">Service Details</h2>
+        <a href="javascript:history.back()" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left-circle"></i> Back
+        </a>
     </div>
-    <div class="table-responsive mt-3" style="width:100%">
-        <table class="table table-bordered table-sm text-center table-light" border="1">
-            <thead class="table-primary">
-            <tr>
-                <th class="th-sm align-middle" scope="col">ID</th>
-                <th class="th-sm align-middle" scope="col">Kod państwa</th>
-                <th class="th-sm align-middle" scope="col">Państwo</th>
-                <th class="th-sm align-middle" scope="col">Dostawca usługi</th>
-                <th class="th-sm align-middle" scope="col">Nazwa usługi</th>
-                <th class="th-sm align-middle" scope="col">Typ usługi</th>
-                <th class="th-sm align-middle" scope="col">Status usługi</th>
-                <th class="th-sm align-middle" scope="col">Start usługi</th>
-                <th class="th-sm align-middle" scope="col">TSP URL</th>
-                <th class="th-sm align-middle" scope="col">CRL URL</th>
-                <th class="th-sm align-middle" scope="col">Status CRL URL</th>
-                <th class="th-sm align-middle" scope="col">Status obsługi</th>
-                <th class="th-sm align-middle" scope="col">Digital ID usługi</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="align-middle">{{ tsp_service.id }}</td>
-                <td class="align-middle">{{ tsp_service.country_code }}</td>
-                <td class="align-middle">{{ tsp_service.country_name }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_name }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_service_name }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_service_type }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_service_status }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_service_start_date|date:"Y-m-d" }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_url }}</td>
-                <td class="align-middle">{{ tsp_service.crl_url }}</td>
-                <td class="align-middle">{{ tsp_service.crl_url_status_app }}</td>
-                <td class="align-middle">{{ tsp_service.service_status_app }}</td>
-                <td class="align-middle">{{ tsp_service.tsp_service_digital_id }}</td>
-            </tr>
-            </tbody>
-        </table>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">{{ tsp_service.tsp_service_name }}</h5>
+        </div>
+        <div class="card-body bg-light">
+            <div class="accordion" id="serviceDetailsAccordion">
+                <!-- General Info -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button fw-semibold text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            General Information
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#serviceDetailsAccordion">
+                        <div class="accordion-body border-start ps-3">
+                            <dl class="mb-0">
+                                <dt>ID</dt>
+                                <dd class="mb-2">{{ tsp_service.id }}</dd>
+
+                                <dt>Country Code</dt>
+                                <dd class="mb-2">{{ tsp_service.country_code }}</dd>
+
+                                <dt>Country</dt>
+                                <dd class="mb-2">{{ tsp_service.country_name }}</dd>
+
+                                <dt>Service Provider</dt>
+                                <dd class="mb-2">{{ tsp_service.tsp_name }}</dd>
+
+                                <dt>Service Type</dt>
+                                <dd class="mb-2">{{ tsp_service.tsp_service_type }}</dd>
+
+                                <dt>Service Status</dt>
+                                <dd class="mb-2">
+                                    <span class="badge
+                                        {% if tsp_service.tsp_service_status == 'Granted' %}bg-granted
+                                        {% elif tsp_service.tsp_service_status == 'Withdrawn' %}bg-withdrawn
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ tsp_service.tsp_service_status }}
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Info -->
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed fw-semibold text-primary" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo">
+                            Technical Details
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#serviceDetailsAccordion">
+                        <div class="accordion-body border-start ps-3">
+                            <dl class="mb-0">
+                                <dt>Start Date</dt>
+                                <dd class="mb-2">{{ tsp_service.tsp_service_start_date|date:"Y-m-d" }}</dd>
+
+                                <dt>
+                                    TSP URL
+                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Address of the TSP service URL"></i>
+                                </dt>
+                                <dd class="mb-2 text-break">{{ tsp_service.tsp_url }}</dd>
+
+                                <dt>
+                                    CRL URL
+                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Certificate Revocation List URL"></i>
+                                </dt>
+                                <dd class="mb-2 text-break">{{ tsp_service.crl_url }}</dd>
+
+                                <dt>CRL URL Status</dt>
+                                <dd class="mb-2">
+                                    <span class="badge
+                                        {% if tsp_service.crl_url_status_app == 'CRL URL defined' %}bg-crl-url-defined
+                                        {% elif tsp_service.crl_url_status_app == 'CRL URL undefined' %}bg-crl-url-undefined
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ tsp_service.crl_url_status_app }}
+                                    </span>
+                                </dd>
+
+                                <dt>Handling Status</dt>
+                                <dd class="mb-2">
+                                    <span class="badge
+                                        {% if tsp_service.service_status_app == 'Served' %}badge-outline-served
+                                        {% elif tsp_service.service_status_app == 'Not served (new)' %}badge-outline-not-served-new
+                                        {% elif tsp_service.service_status_app == 'Not served (withdrawn)' %}badge-outline-not-served-withdrawn
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ tsp_service.service_status_app }}
+                                    </span>
+                                </dd>
+
+                                <dt>
+                                    Digital ID
+                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Unique digital identifier for the service"></i>
+                                </dt>
+                                <dd class="mb-2 text-break">{{ tsp_service.tsp_service_digital_id }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Tooltip initializer -->
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+    </script>
 </div>
 {% endblock %}

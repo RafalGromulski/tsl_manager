@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 {% load django_bootstrap5 %}
-{% block title %}TSL Manager - All Services{% endblock %}
+{% block title %}TSL Manager - Processed Services{% endblock %}
 {% block page_content %}
 {% include "includes/navigation.html" %}
 <div class="container py-4">
-    <h2 class="fw-semibold text-primary mb-4">All Services</h2>
+    <h2 class="fw-semibold text-primary mb-4">Processed Services</h2>
 
     <div class="card shadow-sm mb-4 p-4">
         <form action="" method="get" class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
             {% bootstrap_form my_filter.form show_label=skip layout="inline" %}
             {% bootstrap_button "Search" button_type="submit" button_class="btn btn-outline-primary mx-2" style="width:150px" %}
             {% if my_filter.is_bound %}
-            <a href="{% url 'all_services' %}" class="btn btn-outline-primary mx-2" role="button" style="width:150px">
+            <a href="{% url 'processed_services' %}" class="btn btn-outline-primary mx-2" role="button" style="width:150px">
                 Clear filters
             </a>
             {% endif %}
@@ -24,14 +24,12 @@
             <thead class="bg-primary text-white">
             <tr>
                 <th scope="col">No.</th>
+                <th scope="col">Service Status</th>
                 <th scope="col">Service Provider</th>
                 <th scope="col">Service Name</th>
-                <th scope="col">TSP URL</th>
+                <th scope="col">Service Start Date</th>
                 <th scope="col">CRL URL</th>
                 <th scope="col">CRL URL Status</th>
-                <th scope="col">Service Status</th>
-                <th scope="col">Service Type</th>
-                <th scope="col">Status</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -44,9 +42,17 @@
                         <i class="bi bi-info-square ms-1"></i>
                     </a>
                 </td>
+                <td>
+                        <span class="badge
+                            {% if service.tsp_service_status == 'Granted' %}bg-granted
+                            {% elif service.tsp_service_status == 'Withdrawn' %}bg-withdrawn
+                            {% else %}bg-secondary{% endif %}">
+                            {{ service.tsp_service_status }}
+                        </span>
+                </td>
                 <td class="text-break">{{ service.tsp_name }}</td>
                 <td class="text-break">{{ service.tsp_service_name }}</td>
-                <td class="text-break">{{ service.tsp_url }}</td>
+                <td>{{ service.tsp_service_start_date|date:"Y-m-d" }}</td>
                 <td class="text-break">{{ service.crl_url }}</td>
                 <td>
                         <span class="badge
@@ -57,35 +63,11 @@
                         </span>
                 </td>
                 <td>
-                        <span class="badge
-                            {% if service.tsp_service_status == 'Granted' %}bg-granted
-                            {% elif service.tsp_service_status == 'Withdrawn' %}bg-withdrawn
-                            {% else %}bg-secondary{% endif %}">
-                            {{ service.tsp_service_status }}
-                        </span>
-                </td>
-                <td class="text-break">{{ service.tsp_service_type }}</td>
-                <td>
-                        <span class="badge
-                            {% if service.service_status_app == 'Served' %}badge-outline-served
-                            {% elif service.service_status_app == 'Not served (new)' %}badge-outline-not-served-new
-                            {% elif service.service_status_app == 'Not served (withdrawn)' %}badge-outline-not-served-withdrawn
-                            {% else %}bg-secondary{% endif %}">
-                            {{ service.service_status_app }}
-                        </span>
-                </td>
-                <td>
-                    {% if service.service_status_app != "Nie obsłużona (wycofana)" %}
                     <div class="btn-group btn-group-sm" role="group">
                         <a href="#" class="edit-crl-btn" data-service-id="{{ service.id }}" data-bs-toggle="modal" data-bs-target="#crlUrlModal">
                             <i class="bi bi-pencil" aria-hidden="true"></i>
                         </a>
-                        <a href="#" class="confirm-service-btn ms-2" data-service-id="{{ service.id }}" data-bs-toggle="modal"
-                           data-bs-target="#confirmServiceModal">
-                            <i class="bi bi-check-circle" aria-hidden="true"></i>
-                        </a>
                     </div>
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -116,41 +98,10 @@
             });
         });
     });
-
-    document.querySelectorAll('.confirm-service-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const serviceId = this.dataset.serviceId;
-            fetch(`/confirm-service/${serviceId}/`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('confirmServiceContent').innerHTML = data.html;
-                document.getElementById('confirmServiceForm').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    fetch(`/confirm-service/${serviceId}/`, {
-                        method: 'POST',
-                        body: new FormData(this),
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                    }).then(resp => resp.json()).then(data => {
-                        if (data.success) location.reload();
-                    });
-                });
-            });
-        });
-    });
 </script>
 <div class="modal fade" id="crlUrlModal" tabindex="-1" aria-labelledby="crlUrlModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" id="crlFormContent">
-            <!-- Modal content loaded via AJAX -->
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="confirmServiceModal" tabindex="-1" aria-labelledby="confirmServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" id="confirmServiceContent">
             <!-- Modal content loaded via AJAX -->
         </div>
     </div>

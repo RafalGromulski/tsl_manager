@@ -1,26 +1,87 @@
 {% load static %}
-<div class="col text-center">
-        <a href="{% url 'all_services' %}"
-       class="btn btn-dark ms-0 my-2"
-       role="button"
-       aria-pressed="true"
-       style="width:24%;">Wszystkie usługi</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded mb-4 shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-semibold" href="{% url 'all_services' %}">TSL Manager</a>
 
-    <a href="{% url 'services_to_served' %}"
-       class="btn btn-dark ms-0 my-2"
-       role="button"
-       aria-pressed="true"
-       style="width:24%;">Usługi do obsłużenia</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <a href="{% url 'served_services' %}"
-       class="btn btn-dark mx-2 my-2"
-       role="button"
-       aria-pressed="true"
-       style="width:24%;">Usługi obsłużone</a>
+        <div class="collapse navbar-collapse justify-content-between" id="navMenu">
+            <!-- LEFT: Links -->
+            <ul class="navbar-nav gap-2">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'new_services' %}fw-bold border-bottom border-light{% endif %}"
+                       href="{% url 'new_services' %}">New Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'all_services' %}fw-bold border-bottom border-light{% endif %}"
+                       href="{% url 'all_services' %}">All Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'processed_services' %}fw-bold border-bottom border-light{% endif %}"
+                       href="{% url 'processed_services' %}">Processed Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'tsl_status' %}fw-bold border-bottom border-light{% endif %}"
+                       href="{% url 'tsl_status' %}">TSL Status</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-1" href="#" id="triggerUpdateModal" data-bs-toggle="modal"
+                       data-bs-target="#updateServicesModal">
+                        <i class="bi bi-arrow-repeat"></i> Update Services
+                    </a>
+                </li>
+            </ul>
 
-    <a href="{% url 'tsl_validity' %}"
-       class="btn btn-dark me-0 my-2"
-       role="button"
-       aria-pressed="true"
-       style="width:24%;">Statusy ważności TSL</a>
+            <!-- RIGHT: User info & logout -->
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3">Hi, {{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-light">
+                        <i class="bi bi-box-arrow-right"></i> Log out
+                    </button>
+                </form>
+                <button id="themeToggle" class="btn btn-sm btn-outline-light ms-3" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <i class="bi bi-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("updateServicesForm");
+      if (form) {
+        form.addEventListener("submit", function () {
+          const btn = this.querySelector("button[type='submit']");
+          btn.innerHTML = 'Updating... <span class="spinner-border spinner-border-sm"></span>';
+        });
+      }
+    });
+</script>
+
+<div class="modal fade" id="updateServicesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Services</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to update all services?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <form method="post" action="{% url 'update_services' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        Update <i class="bi bi-download ms-1"></i>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

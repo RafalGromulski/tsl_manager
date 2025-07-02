@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h5 class="modal-title">Service Handling Confirmation</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <p>Are you sure you want to mark the service <strong>{{ tsp_object.tsp_service_name }}</strong> as handled?</p>
+</div>
+<div class="modal-footer">
+    <form id="confirmServiceForm" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </form>
+</div>

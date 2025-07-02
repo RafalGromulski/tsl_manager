@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h5 class="modal-title">Edit/Confirm CRL URL</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <p>Service: <strong>{{ tsp_object.tsp_service_name }}</strong></p>
+    <form id="crlUrlForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" form="crlUrlForm" class="btn btn-success">Save</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+</div>

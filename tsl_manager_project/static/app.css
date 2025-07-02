@@ -1,15 +1,237 @@
+
+:root {
+    --primary: #003366;
+    --background: #f9fafb;
+    --text: #212529;
+    --card-bg: #ffffff;
+    --card-header-bg: var(--primary);
+    --border-color: #003366;
+}
+
+[data-theme="dark"] {
+    --primary: #66b2ff;
+    --background: #121212;
+    --text: #f1f1f1;
+    --card-bg: #1e1e1e;
+    --card-header-bg: #1a2732;
+    --border-color: #66b2ff;
+}
+
 body {
-  padding: 1rem;
-  max-width: 100%;
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-th {
-  height: 50px;
-  font-size: 14px;
-  top: 0;
-  position: sticky;
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-td {
-  font-size: 13px;
+h2, h5 {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: #002952;
+    border-color: #002952;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: #6c757d;
+}
+
+.card {
+    border-radius: 0.75rem;
+    background-color: var(--card-bg);
+}
+
+.card-header {
+    font-size: 1.2rem;
+    background-color: var(--card-header-bg);
+    color: #fff;
+}
+
+.border-start {
+    border-left: 4px solid var(--border-color);
+    background-color: var(--card-bg);
+    padding-left: 1rem;
+}
+
+.accordion-button {
+    font-weight: 500;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--primary);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+dl dt {
+    color: var(--primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+dl dd {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+dt i.bi {
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--text);
+}
+
+/* ========== BADGES ========== */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.45em 0.65em;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+
+/* Fallback */
+.badge.bg-secondary {
+    background-color: #dee2e6 !important;
+    color: #495057 !important;
+}
+
+/* CRL URL Status */
+.badge.bg-crl-url-defined {
+    background-color: #198754 !important;
+    color: #fff !important;
+}
+
+.badge.bg-crl-url-undefined {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+/* TSP Service Status */
+.badge.bg-granted {
+    background-color: #0dcaf0 !important;
+    color: #000 !important;
+}
+
+.badge.bg-withdrawn {
+    background-color: #6c757d !important;
+    color: #fff !important;
+}
+
+/* Internal Service Status (outlined style) */
+.badge-outline-served {
+    border: 2px solid #198754;
+    color: #198754;
+    background-color: transparent;
+}
+
+.badge-outline-not-served-new {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+    background-color: transparent;
+}
+
+.badge-outline-not-served-withdrawn {
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    background-color: transparent;
+}
+
+.badge-outline-served:hover {
+    background-color: #198754;
+    color: #fff;
+}
+
+.badge-outline-not-served-new:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.badge-outline-not-served-withdrawn:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* TSL Validity */
+.badge.bg-valid {
+    background-color: #198754 !important;
+    color: #fff !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.badge.bg-invalid {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+/* Catch-all for unknown dynamic status values */
+.badge[class*="bg-"] {
+    color: #fff !important;
+}
+
+/* ========== TABLE STYLING ========== */
+.table td,
+.table th {
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table .text-break {
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Minimum widths for specific columns */
+th:nth-child(2), td:nth-child(2),
+th:nth-child(3), td:nth-child(3),
+th:nth-child(4), td:nth-child(4) {
+    min-width: 200px;
+}
+
+/* Mobile fix for border layout */
+@media (max-width: 576px) {
+    .border-start {
+        border-left: none;
+        border-top: 4px solid var(--border-color);
+        padding-top: 1rem;
+    }
+}
+
+/* Nagłówki tabeli wyśrodkowane pionowo */
+thead th {
+    vertical-align: middle;
 }

@@ -122,7 +122,7 @@ class TSPServiceParser:
                         crl_url=crl_url,
                         service_digital_id=digital_id,
                         service_status_app="Not served (new)",
-                        crl_url_status_app="CRL URL undetermined"
+                        crl_url_status_app="CRL URL undefined"
                     ))
                 except Exception as e:
                     logger.warning(f"Error parsing service in {path.name}: {e}")

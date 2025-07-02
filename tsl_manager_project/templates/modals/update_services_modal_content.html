@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h5 class="modal-title">Update Services</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body text-center">
+    <p>Do you want to update all services?</p>
+</div>
+<div class="modal-footer justify-content-center">
+    <form id="updateServicesForm" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            Update <i class="bi bi-download ms-1"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </form>
+</div>

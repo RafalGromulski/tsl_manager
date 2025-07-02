@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block title %}TSL Manager - TSL Status{% endblock %}
+{% block page_content %}
+{% include "includes/navigation.html" %}
+<div class="container py-4">
+    <h2 class="fw-semibold text-primary mb-4">TSL Status</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle shadow-sm">
+            <thead class="bg-primary text-white">
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Country</th>
+                <th scope="col">TSL Operator</th>
+                <th scope="col">TSL Issue Date</th>
+                <th scope="col">TSL Expiry Date</th>
+                <th scope="col">TSL Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for service in tsp_services %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td class="text-break">{{ service.country_name }}</td>
+                <td class="text-break">{{ service.tsl_operator_name }}</td>
+                <td>{{ service.tsl_issue_date|date:"Y-m-d" }}</td>
+                <td>{{ service.tsl_expiry_date|date:"Y-m-d" }}</td>
+                <td>
+                        <span class="badge
+                            {% if service.tsl_validity_alert == 'Valid' %}bg-valid
+                            {% elif service.tsl_validity_alert == 'Expiring soon' %}bg-warning
+                            {% elif service.tsl_validity_alert == 'Expired' %}bg-invalid
+                            {% else %}bg-secondary{% endif %}">
+                            {{ service.tsl_validity_alert }}
+                        </span>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
