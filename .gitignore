@@ -49,7 +49,7 @@ venv.bak/
 # =====================================
 .env
 .env.*
-!*.env.example     # Keep example env files for documentation
+!*.env.example
 
 # =====================================
 # 📦 Dependency managers

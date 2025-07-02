@@ -39,4 +39,3 @@ COUNTRIES_PL: dict[str, str] = {
     "UK": "Wielka Brytania",
     "IT": "Włochy",
 }
-

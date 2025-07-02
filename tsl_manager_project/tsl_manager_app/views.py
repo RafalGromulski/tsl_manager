@@ -1,26 +1,28 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-
-# from rest_framework import viewsets
+# from pathlib import Path
 
 from .choices import ServiceStatus, CrlUrlStatus
 from .constants import COUNTRIES_PL
 from .filters import MainViewFilter
 from .forms import CrlUrlForm
 from .models import TspServiceInfo, TslValidityInfo
-# from .serializers import TspServiceInfoSerializer
-from .services.tsl_parser import TslParser
 from .services.service_updater import ServiceUpdater
+from .services.tsl_parser import TslParser
 
+
+# DATA_DIRECTORY = r"/code/tsl_downloads"
+# DATA_DIRECTORY = Path(DATA_DIRECTORY)
 
 class GreetingView(TemplateView):
     template_name = "greeting_view.html"
 
 
-# class FilteredServiceListView(LoginRequiredMixin, View):
-class FilteredServiceListView(View):
+class FilteredServiceListView(LoginRequiredMixin, View):
     model = TspServiceInfo
     template_name = None
     filter_kwargs = {}
@@ -39,8 +41,8 @@ class FilteredServiceListView(View):
         return render(request, self.template_name, context)
 
 
-class ServicesToServedView(FilteredServiceListView):
-    # template_name = "services_to_served.html"
+class NewServicesView(FilteredServiceListView):
+    template_name = "new_services.html"
     filter_kwargs = {
         "service_status_app__in": [
             ServiceStatus.NEW_NOT_SERVED,
@@ -55,8 +57,8 @@ class AllServicesView(FilteredServiceListView):
     order_by_fields = ["country_name", "tsp_name", "tsp_service_name", "id"]
 
 
-class ServedServicesView(FilteredServiceListView):
-    template_name = "served_services.html"
+class ProcessedServicesView(FilteredServiceListView):
+    template_name = "processed_services.html"
     filter_kwargs = {"service_status_app": ServiceStatus.SERVED}
     order_by_fields = ["id", "country_name", "tsp_name"]
 
@@ -69,27 +71,37 @@ class ServiceDetailsView(LoginRequiredMixin, DetailView):
 
 class ConfirmServiceView(LoginRequiredMixin, View):
     model = TspServiceInfo
-    template_name = "confirm_service.html"
+    template_name = "confirm_service_modal_content.html"
 
     def get_object(self, pk):
         return get_object_or_404(self.model, pk=pk)
 
     def get(self, request, pk):
         tsp_object = self.get_object(pk)
-        return render(request, self.template_name, {"tsp_object": tsp_object})
+        context = {"tsp_object": tsp_object}
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            html = render_to_string("modals/confirm_service_modal_content.html", context, request=request)
+            return JsonResponse({"html": html})
+
+        return render(request, self.template_name, context)
 
     def post(self, request, pk):
         tsp_object = self.get_object(pk)
         tsp_object.service_status_app = ServiceStatus.SERVED
         tsp_object.save()
-        return redirect("services_to_served")
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"success": True})
+
+        return redirect("new_services")
 
 
 class CrlUrlFormView(LoginRequiredMixin, UpdateView):
     model = TspServiceInfo
-    template_name = "crl_url_form.html"
+    template_name = "crl_url_form_modal_content.html"
     form_class = CrlUrlForm
-    success_url = "/services_to_served/"
+    success_url = "/new_services/"
 
     def get_object(self, queryset=None):
         return get_object_or_404(self.model, pk=self.kwargs["pk"])
@@ -99,20 +111,31 @@ class CrlUrlFormView(LoginRequiredMixin, UpdateView):
         context["tsp_object"] = self.object
         return context
 
-    def get_initial(self):
-        initial = super().get_initial()
-        initial["crl_url"] = self.object.crl_url
-        return initial
+    # def get_initial(self):
+    #     initial = super().get_initial()
+    #     initial["crl_url"] = self.object.crl_url
+    #     return initial
 
     def form_valid(self, form):
         form.instance.service_status_app = ServiceStatus.SERVED
         form.instance.crl_url_status_app = CrlUrlStatus.URL_DEFINED
+
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            form.save()
+            return JsonResponse({"success": True})
+
         return super().form_valid(form)
 
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            html = render_to_string("modals/crl_url_form_modal_content.html", context, request=self.request)
+            return JsonResponse({"html": html})
+        return super().render_to_response(context, **response_kwargs)
 
-class TslValidityView(LoginRequiredMixin, TemplateView):
+
+class TslStatusView(LoginRequiredMixin, TemplateView):
     model = TslValidityInfo
-    template_name = "tsl_validity.html"
+    template_name = "tsl_status.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -121,29 +144,17 @@ class TslValidityView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateServicesView(LoginRequiredMixin, View):
-    template_name = "update_services.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
+    template_name = "update_services_modal_content.html"
 
     def post(self, request):
         parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
+        # parser = TslParser(DATA_DIRECTORY, COUNTRIES_PL)
         parsed_services = parser.parse_all()
 
         updater = ServiceUpdater(parsed_services)
         updater.run()
 
-        return redirect("services_to_served")
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"success": True})
 
-    # def post(self, request):
-    #     parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
-    #     service_data = parser.tsl_parse()
-    #
-    #     updater = ServiceUpdater(service_data)
-    #     updater.run()
-    #
-    #     return redirect("services_to_served")
-
-# class TspServiceViewSet(viewsets.ModelViewSet):
-#     queryset = TspServiceInfo.objects.filter(crl_url__startswith="http")
-#     serializer_class = TspServiceInfoSerializer
+        return redirect("new_services")

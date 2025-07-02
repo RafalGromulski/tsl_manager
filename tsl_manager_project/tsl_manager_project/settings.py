@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     # Third-party apps
     "django_bootstrap5",
     "django_filters",
-    # "rest_framework",
     # Local apps
     "tsl_manager_app",
 ]
@@ -78,10 +77,10 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        # "HOST": os.getenv("POSTGRES_HOST"),
-        # "PORT": os.getenv("POSTGRES_PORT"),
-        "HOST": "postgres_database",
-        "PORT": "5432",
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
+        # "HOST": "postgres_database",
+        # "PORT": "5432",
     }
 }
 # === PASSWORD VALIDATION ===
@@ -100,7 +99,11 @@ USE_TZ = True
 
 # === STATIC & MEDIA FILES ===
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "static"
+# STATIC_ROOT = BASE_DIR / "static"
+# (dla developmentu, jeśli trzymasz np. app.css w katalogu 'static')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -109,11 +112,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # === AUTHENTICATION REDIRECTS ===
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "services_to_served"
+LOGIN_REDIRECT_URL = "new_services"
 LOGOUT_REDIRECT_URL = "greeting_view"
 
 # === CUSTOM PROJECT PATHS ===
-DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "data1"
+# DATA_DIRECTORY = BASE_DIR / "tsl_downloads"
+# DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "data1"
+# DATA_DIRECTORY = r"/code/tsl_downloads"
 
 # === DJANGO BOOTSTRAP 5 CONFIGURATION ===
 BOOTSTRAP5 = {

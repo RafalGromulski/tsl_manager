@@ -5,7 +5,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional  # to change
 from urllib.parse import urlparse
 from xml.dom.minidom import Element, parse as minidom_parse
 

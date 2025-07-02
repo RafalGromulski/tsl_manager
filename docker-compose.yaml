@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
     env_file:
-      - .env
+      - ./tsl_manager_database/.env
     networks:
       - tsl_manager_network
     restart: always
@@ -72,6 +72,8 @@ services:
     depends_on:
       postgres_database:
         condition: service_healthy
+#      tsl_manager_downloader:
+#        condition: service_healthy
     networks:
       - tsl_manager_network
     restart: always
