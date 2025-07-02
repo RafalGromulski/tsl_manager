@@ -12,16 +12,16 @@ class TspServiceStatus(models.TextChoices):
 
 class ServiceStatus(models.TextChoices):
     """
-    Enumeration of internal service processing statuses, with Polish display labels.
+    Enumeration of internal service processing statuses.
     """
-    NEW_NOT_SERVED = "Nie obsłużona (nowa)", _("Nie obsłużona (nowa)")
-    WITHDRAWN_NOT_SERVED = "Nie obsłużona (wycofana)", _("Nie obsłużona (wycofana)")
-    SERVED = "Obsłużona", _("Obsłużona")
+    NEW_NOT_SERVED = "Not served (new)", _("Not served (new)")
+    WITHDRAWN_NOT_SERVED = "Not served (withdrawn)", _("Not served (withdrawn)")
+    SERVED = "Served", _("Served")
 
 
 class CrlUrlStatus(models.TextChoices):
     """
-    Enumeration of CRL URL statuses for a service, in Polish.
+    Enumeration of CRL URL statuses for a service.
     """
-    URL_DEFINED = "CRL URL ustalony", _("CRL URL ustalony")
-    URL_UNDEFINED = "CRL URL nieustalony", _("CRL URL nieustalony")
+    URL_DEFINED = "CRL URL defined", _("CRL URL defined")
+    URL_UNDEFINED = "CRL URL undefined", _("CRL URL undefined")

@@ -21,6 +21,6 @@ class CrlUrlForm(ModelForm):
         widgets = {
             "crl_url": TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Wpisz CRL URL"
+                "placeholder": "Enter CRL URL"
             })
         }

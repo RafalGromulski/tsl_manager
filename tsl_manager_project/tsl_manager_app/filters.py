@@ -10,28 +10,28 @@ class MainViewFilter(FilterSet):
     Provides filters by country, provider name, service name, CRL URL status, service status,
     service type, and application handling status.
     """
-    country_name = AllValuesFilter(empty_label="Państwo...")
+    country_name = AllValuesFilter(empty_label="Country...")
 
-    tsp_name = CharFilter(label="Dostawca usługi...", lookup_expr="icontains")
+    tsp_name = CharFilter(label="Service Provider...", lookup_expr="icontains")
 
-    tsp_service_name = CharFilter(label="Nazwa usługi...", lookup_expr="icontains")
+    tsp_service_name = CharFilter(label="Service Name...", lookup_expr="icontains")
 
     crl_url_status_app = ChoiceFilter(
-        empty_label="Status CRL URL...",
+        empty_label="CRL URL Status...",
         choices=CrlUrlStatus.choices,
     )
 
     tsp_service_status = ChoiceFilter(
-        empty_label="Status usługi...",
+        empty_label="Service Status...",
         choices=TspServiceStatus.choices,
     )
 
     tsp_service_type = AllValuesFilter(
-        empty_label="Typ usługi...",
+        empty_label="Service Type...",
     )
 
     service_status_app = ChoiceFilter(
-        empty_label="Status obsługi usługi...",
+        empty_label="Handling Status...",
         choices=ServiceStatus.choices,
     )
 
