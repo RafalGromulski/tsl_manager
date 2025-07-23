@@ -1,7 +1,6 @@
 """
-Django settings for tsl_manager_project.
-This file contains configuration for the Django framework and is designed
-to be environment-agnostic. Environment variables are used for all sensitive data.
+Base Django settings for tsl_manager_project.
+Contains settings shared across all environments.
 """
 
 import os
@@ -9,17 +8,11 @@ from pathlib import Path
 
 # === BASE DIRECTORY ===
 # Project root directory (used for building paths)
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # === SECURITY SETTINGS ===
-# Security key for cryptographic signing - keep this secret!
+# Security key for cryptographic signing
 SECRET_KEY = os.getenv("SECRET_KEY")
-
-# Debug mode should be disabled in production environments
-DEBUG = os.getenv("DEBUG") == "True"
-
-# Hosts allowed to connect to the server
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # === APPLICATIONS ===
 INSTALLED_APPS = [
@@ -48,8 +41,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# === URL CONFIGURATION ===
+# === URLS, WSGI - CONFIGURATION ===
 ROOT_URLCONF = "tsl_manager_project.urls"
+WSGI_APPLICATION = "tsl_manager_project.wsgi.application"
 
 # === TEMPLATES ===
 TEMPLATES = [
@@ -67,22 +61,6 @@ TEMPLATES = [
     },
 ]
 
-# === WSGI CONFIGURATION ===
-WSGI_APPLICATION = "tsl_manager_project.wsgi.application"
-
-# === DATABASE CONFIGURATION ===
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"),
-        "PORT": os.getenv("POSTGRES_PORT"),
-        # "HOST": "postgres_database",
-        # "PORT": "5432",
-    }
-}
 # === PASSWORD VALIDATION ===
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -99,11 +77,6 @@ USE_TZ = True
 
 # === STATIC & MEDIA FILES ===
 STATIC_URL = "/static/"
-# STATIC_ROOT = BASE_DIR / "static"
-# (dla developmentu, jeśli trzymasz np. app.css w katalogu 'static')
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -115,12 +88,7 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "new_services"
 LOGOUT_REDIRECT_URL = "greeting_view"
 
-# === CUSTOM PROJECT PATHS ===
-# DATA_DIRECTORY = BASE_DIR / "tsl_downloads"
-# DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "data1"
-# DATA_DIRECTORY = r"/code/tsl_downloads"
-
-# === DJANGO BOOTSTRAP 5 CONFIGURATION ===
+# === BOOTSTRAP 5 CONFIGURATION ===
 BOOTSTRAP5 = {
     "css_url": None,
     "javascript_url": None,

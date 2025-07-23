@@ -1,15 +1,25 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""
+Django's command-line utility for administrative tasks.
+Modified to support dynamic Django settings module selection.
+If DJANGO_ENV is 'production', it uses 'settings.production';
+otherwise, it uses 'settings.development'.
+"""
 import os
 import sys
 
-if os.environ.get("USE_DOTENV", "0") != "1":
+if os.environ.get("DJANGO_ENV", "development") != "production":
     from dotenv import load_dotenv
     load_dotenv()
 
+
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tsl_manager_project.settings')
+    if os.environ.get("DJANGO_ENV", "development") != "production":
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tsl_manager_project.settings.development")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tsl_manager_project.settings.production")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

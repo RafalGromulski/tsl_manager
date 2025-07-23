@@ -1,11 +1,11 @@
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-# from pathlib import Path
 
+from tsl_manager_project.settings.development import DATA_DIRECTORY
 from .choices import ServiceStatus, CrlUrlStatus
 from .constants import COUNTRIES_PL
 from .filters import MainViewFilter
@@ -14,9 +14,6 @@ from .models import TspServiceInfo, TslValidityInfo
 from .services.service_updater import ServiceUpdater
 from .services.tsl_parser import TslParser
 
-
-# DATA_DIRECTORY = r"/code/tsl_downloads"
-# DATA_DIRECTORY = Path(DATA_DIRECTORY)
 
 class GreetingView(TemplateView):
     template_name = "greeting_view.html"
@@ -147,8 +144,7 @@ class UpdateServicesView(LoginRequiredMixin, View):
     template_name = "update_services_modal_content.html"
 
     def post(self, request):
-        parser = TslParser(settings.DATA_DIRECTORY, COUNTRIES_PL)
-        # parser = TslParser(DATA_DIRECTORY, COUNTRIES_PL)
+        parser = TslParser(DATA_DIRECTORY, COUNTRIES_PL)
         parsed_services = parser.parse_all()
 
         updater = ServiceUpdater(parsed_services)
