@@ -1,16 +1,20 @@
 # =====================================
-# 📦 Global .gitignore for the project root
-# Ignore files and directories that should not be committed to Git
-# Covers Python, Django, virtual environments, test tools, editors, Docker, and system files
+# 🐳 Docker ignore for django_project
+# Exclude local, development, and test files from Docker build context
 # =====================================
+
+# =====================================
+# 🔀 Git and version control
+# =====================================
+.git/
+.gitignore
+.gitattributes
 
 # =====================================
 # 🐍 Python: Bytecode and compiled files
 # =====================================
-**/__pycache__/
+__pycache__/
 *.py[cod]
-*$py.class
-*.pyo
 *.so
 
 # =====================================
@@ -51,13 +55,7 @@ venv.bak/
 # =====================================
 .env
 .env.*
-!*.env.example
-
-# =====================================
-# 📦 Dependency managers
-# =====================================
-Pipfile.lock      # Pipenv
-poetry.lock       # Poetry
+!*.env.example     # Keep example env files for documentation
 
 # =====================================
 # 🌐 Django-specific files
@@ -85,6 +83,7 @@ pytest.ini
 # 🧹 Type checking and linting
 # =====================================
 .flake8
+pyproject.toml     # Ignore if not used in build context
 .mypy_cache/
 
 # =====================================
@@ -114,35 +113,10 @@ htmlcov/
 .DS_Store
 *.swp
 Thumbs.db
-*~
-
-# =====================================
-# 🐳 Docker / Docker Compose (dev use)
-# =====================================
-*.tar
-*.container
-.devcontainer/
 
 # =====================================
 # ⚙️ Project-specific configuration
 # =====================================
 database.ini
 !database.ini.example
-
-# =====================================
-# 🧪 Miscellaneous
-# =====================================
-.tox/
-__pypackages__/
-
-# =====================================
-# 📦 Other
-# =====================================
-**/secrets/
-**/Other/
-**/other/
-**/tsl_downloads/*.xml
-**/data_1/*.xml
-**/logs/*.csv
-**/requirements.txt
-**/requirements-dev.txt
+pyproject.toml

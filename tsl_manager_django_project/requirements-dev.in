@@ -1,7 +1,0 @@
--r requirements.in
-
-black
-flake8
-pytest
-pytest-django
-python-dotenv

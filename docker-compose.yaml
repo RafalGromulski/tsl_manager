@@ -1,177 +1,339 @@
+name: tsl_manager
+
+# -----------------------------------------------------------------------------
+# Shared logging config (json-file with rotation)
+# -----------------------------------------------------------------------------
+x-logging-json: &logging_json
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# -----------------------------------------------------------------------------
+# Common service options: network, restart policy, logging, sane ulimits
+# -----------------------------------------------------------------------------
+x-service-common: &service_common
+  networks: [backend]
+  restart: unless-stopped
+  logging: *logging_json
+  init: true                    # PID 1 reaper to avoid zombies
+  stop_grace_period: 30s        # gentler shutdown
+  ulimits:
+    nofile:
+      soft: 4096
+      hard: 8192
+
+
+# -----------------------------------------------------------------------------
+# Shared Django environment (used by web / web-dev)
+# NOTE: STATIC_ROOT/MEDIA_ROOT are *targets* for collectstatic/uploads,
+#       not your source code directories.
+# -----------------------------------------------------------------------------
+x-django-env: &django_env
+  environment:
+    DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.prod}
+    DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
+    DJANGO_SUPERUSER_PASSWORD_FILE: /run/secrets/django_superuser_password
+    ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,web,nginx}
+    CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-}
+    # Database connectivity (Django will use 'postgres' host on the backend network)
+    DB_HOST: postgres
+    DB_PORT: "5432"
+    DB_NAME: ${POSTGRES_DB:-app}
+    DB_USER: ${POSTGRES_USER:-app}
+    DB_PASSWORD_FILE: /run/secrets/postgres_password
+    # Static/media target paths inside the container (served by Nginx in prod)
+    MEDIA_ROOT: /code/media
+    STATIC_ROOT: /code/static
+    TZ: ${TZ:-Europe/Warsaw}
+
+
 services:
-  postgres_database:
-    container_name: postgres_database
-    image: postgres:15.5
-    ports:
-      - "5432:5432"
+
+  # ---------------------------------------------------------------------------
+  # Postgres 16 — persistent data in a volume
+  # ---------------------------------------------------------------------------
+  postgres:
+    <<: *service_common
+    image: postgres:16-alpine
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    secrets: [postgres_password]
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
-    env_file:
-      - ./tsl_manager_database/.env
-    networks:
-      - tsl_manager_network
-    restart: always
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TZ: ${TZ:-Europe/Warsaw}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready --dbname=tsl_manager_database --username=postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 12
+      start_period: 15s
 
-  redis:
-    container_name: tsl_manager_redis
-    image: redis:7
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - tsl_manager_network
-    restart: always
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
-      timeout: 3s
-      retries: 3
-
-  tsl_manager_pgadmin:
-    container_name: tsl_manager_pgadmin
+  # ---------------------------------------------------------------------------
+  # pgAdmin — database admin UI (optional but enabled via profiles)
+  # ---------------------------------------------------------------------------
+  pgadmin:
+    <<: *service_common
     image: dpage/pgadmin4:8.6
-    ports:
-      - "5050:80"
+    ports: ["127.0.0.1:5050:80"]
+#    ports: ["5050:80"]
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-      - ./tsl_manager_pgadmin/config_local.py:/pgadmin4/config_local.py:ro
+      - ./pgadmin/config_local.py:/pgadmin4/config_local.py:ro
+    secrets: [pgadmin_password]
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
-    env_file:
-      - .env
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
+      TZ: ${TZ:-Europe/Warsaw}
     depends_on:
-      postgres_database:
+      postgres:
         condition: service_healthy
-    networks:
-      - tsl_manager_network
-    restart: always
+    profiles: ["prod", "dev"]
+#    profiles: [dev"]
 
-  tsl_manager_django_project:
-    container_name: tsl_manager_django_project
-    build: ./tsl_manager_django_project
+
+  # ---------------------------------------------------------------------------
+  # Django + Gunicorn (PROD) — behind Nginx; internal expose only
+  # ---------------------------------------------------------------------------
+  web:
+    <<: [*service_common, *django_env]
+    build: ./django_project
     volumes:
+      - media_data:/code/media
+      - static_data:/code/static
       - tsl_files:/code/tsl_downloads
-      - static:/code/static
-      - media:/code/media
-    env_file:
-      - ./tsl_manager_django_project/.env
+    secrets: [django_secret_key, django_superuser_password, postgres_password, redis_password]
     depends_on:
-      postgres_database:
-        condition: service_healthy
-#      tsl_manager_downloader:
+#      downloader:
 #        condition: service_healthy
-    networks:
-      - tsl_manager_network
-    restart: always
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8000/ || exit 1" ]
+      test: >
+        curl -fsS -H 'Host: web' -H 'X-Forwarded-Proto: https'
+        http://127.0.0.1:8000/healthz >/dev/null || exit 1
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 30s
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    profiles: ["prod"]
 
-  tsl_manager_downloader:
-    container_name: tsl_manager_downloader
-    build: ./tsl_manager_downloader
-    command: celery -A celery_app worker --loglevel=info -E --hostname=downloader@%h -Q tsl
+  # ---------------------------------------------------------------------------
+  # Django + Gunicorn (DEV) — bind-mounted code, longer timeouts
+  # (If you need it later, uncomment and switch DJANGO_SETTINGS_MODULE to dev)
+  # ---------------------------------------------------------------------------
+  # web-dev:
+  #   <<: [*service_common, *django_env]
+  #   build: ./django_project
+  #   ports: ["8000:8000"]
+  #   env_file: [ .env.dev ]
+  #   environment:
+  #     DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.dev}
+  #   command: >
+  #     sh -c "
+  #       python manage.py migrate --noinput &&
+  #       python manage.py runserver 0.0.0.0:8000
+  #     "
+  #   volumes:
+  #     - ./django_project:/code
+  #     - static_data:/code/static
+  #     - media_data:/code/media
+  #   secrets: [django_secret_key, postgres_password, redis_password]
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   profiles: ["dev"]
+
+  # ---------------------------------------------------------------------------
+  # Nginx — reverse proxy / serves static & media files
+  # ---------------------------------------------------------------------------
+  nginx:
+    <<: *service_common
+    build: ./nginx
+    ports: ["8080:8080"]
     volumes:
-      - tsl_files:/app/tsl_downloads
-      - logs:/app/logs
+      - media_data:/media:ro
+      - static_data:/static:ro
+    environment:
+      TZ: ${TZ:-Europe/Warsaw}
     depends_on:
+      web:
+#        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:mode=1777
+      - /var/run:mode=1777
+      - /tmp:mode=1777
+    profiles: ["prod"]
+
+  # ---------------------------------------------------------------------------
+  # Redis (PROD) — password from secret; no host port exposure
+  # ---------------------------------------------------------------------------
+  redis:
+    <<: *service_common
+    image: redis:7.2-alpine
+    # If you need to expose to host for debugging, uncomment:
+    # ports: ["6379:6379"]
+    command:
+      - sh
+      - -c
+      - |
+        PASS="$(tr -d '\r\n' < /run/secrets/redis_password)"
+        exec redis-server --appendonly yes --requirepass "$$PASS"
+    volumes:
+      - redis_data:/data
+    secrets: [redis_password]
+    environment:
+      TZ: ${TZ:-Europe/Warsaw}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$(tr -d '\\r\\n' </run/secrets/redis_password)\" ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 10s
+    profiles: ["prod"]
+
+  # ---------------------------------------------------------------------------
+  # Celery worker — downloads queue
+  # ---------------------------------------------------------------------------
+  downloader:
+    <<: *service_common
+    build: ./downloader
+    command:
+      - celery
+      - -A
+      - celery_app
+      - worker
+      - --loglevel=info
+      - --events
+      - --hostname=downloader@%h
+      - --queues=tsl
+      - --max-tasks-per-child=100
+    volumes:
+      - logs:/app/logs
+      - tsl_files:/app/tsl_downloads
+    environment:
+      TZ: ${TZ:-Europe/Warsaw}
+    depends_on:
+      postgres:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - tsl_manager_network
-    restart: always
     healthcheck:
       test: [ "CMD-SHELL", "celery -A celery_app inspect ping || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 5
+    stop_grace_period: 60s
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    profiles: ["prod"]
 
-  tsl_manager_beat:
-    container_name: tsl_manager_beat
-    build: ./tsl_manager_downloader
+  # ---------------------------------------------------------------------------
+  # Celery beat — task scheduler
+  # ---------------------------------------------------------------------------
+  beat:
+    <<: *service_common
+    build: ./downloader
     command: celery -A celery_app beat --loglevel=info --schedule /app/celerybeat-data/schedule.db
     volumes:
       - beat_data:/app/celerybeat-data
+    secrets: [django_secret_key, postgres_password, redis_password]
+    environment:
+      TZ: ${TZ:-Europe/Warsaw}
     depends_on:
+      downloader:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
       redis:
-        condition: service_healthy
-      tsl_manager_downloader:
-        condition: service_healthy
-    networks:
-      - tsl_manager_network
-    restart: always
+        condition: service_started
+      web:
+        condition: service_started
     healthcheck:
       test: [ "CMD-SHELL", "ps aux | grep '[c]elery beat' || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 20s
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    profiles: ["prod", "dev"]
 
   flower:
-    container_name: tsl_manager_flower
-    build: ./tsl_manager_downloader
+    <<: *service_common
+    build: ./downloader
     command: celery -A celery_app flower --loglevel=info --port=5555
-    ports:
-      - "5555:5555"
+    ports: ["127.0.0.1:5555:5555"]
+#    ports: ["5555:5555"]
+    environment:
+      TZ: ${TZ:-Europe/Warsaw}
     depends_on:
+      downloader:
+        condition: service_healthy
       redis:
         condition: service_healthy
-      tsl_manager_downloader:
-        condition: service_healthy
-    networks:
-      - tsl_manager_network
-    restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:5555/ || exit 1" ]
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5555/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    profiles: ["prod"]
+#    profiles: [dev"]
 
-  tsl_manager_nginx:
-    container_name: tsl_manager_nginx
-    build: ./tsl_manager_nginx
-    ports:
-      - "8080:8080"
-    volumes:
-      - static:/static
-      - media:/media
-    depends_on:
-      - tsl_manager_django_project
-    networks:
-      - tsl_manager_network
-    restart: always
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  static_data:
+  media_data:
+  tsl_files:
+  logs:
+  postgres_data:
+  pgadmin_data:
+  beat_data:
+  redis_data:
 
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
 networks:
-  tsl_manager_network:
-    name: tsl_manager_network
+  backend:
     driver: bridge
 
-volumes:
-  static:
-    name: static_volume
-  media:
-    name: media_volume
-  tsl_files:
-    name: tsl_files_volume
-  logs:
-    name: logs_volume
-  database_data:
-    name: database_data
-  pgadmin_data:
-    name: pgadmin_data
-  beat_data:
-    name: beat_data
-  redis_data:
-    name: redis_data
+# -----------------------------------------------------------------------------
+# Secrets (host files are mapped into /run/secrets/<name> in containers)
+# -----------------------------------------------------------------------------
+secrets:
+  django_secret_key:
+    file: ./secrets/django_secret_key.txt
+  django_superuser_password:
+    file: ./secrets/django_superuser_password.txt
+  pgadmin_password:
+    file: ./secrets/pgadmin_password.txt
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  redis_password:
+    file: ./secrets/redis_password.txt

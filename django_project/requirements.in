@@ -1,0 +1,11 @@
+# Runtime dependencies
+asyncpg>=0.30,<0.31
+Django>=5.2,<5.3
+django-bootstrap5>=25.1,<25.2
+django-environ>=0.12,<0.13
+django-filter>=25.1,<25.2
+psycopg2-binary>=2.9,<2.10
+python-dotenv>=1.1,<1.2
+
+# Production
+gunicorn>=23.0,<23.1

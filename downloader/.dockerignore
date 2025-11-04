@@ -1,16 +1,20 @@
 # =====================================
-# 📦 Global .gitignore for the project root
-# Ignore files and directories that should not be committed to Git
-# Covers Python, Django, virtual environments, test tools, editors, Docker, and system files
+# 🐳 Docker ignore for downloader
+# Exclude local, development, and test files from Docker build context
 # =====================================
+
+# =====================================
+# 🔀 Git and version control
+# =====================================
+.git/
+.gitignore
+.gitattributes
 
 # =====================================
 # 🐍 Python: Bytecode and compiled files
 # =====================================
-**/__pycache__/
+__pycache__/
 *.py[cod]
-*$py.class
-*.pyo
 *.so
 
 # =====================================
@@ -28,6 +32,8 @@ dist/
 *.tmp
 *.pot
 *.bak
+logs/*
+!logs/.gitkeep
 
 # =====================================
 # 🗄️ Local databases
@@ -51,27 +57,7 @@ venv.bak/
 # =====================================
 .env
 .env.*
-!*.env.example
-
-# =====================================
-# 📦 Dependency managers
-# =====================================
-Pipfile.lock      # Pipenv
-poetry.lock       # Poetry
-
-# =====================================
-# 🌐 Django-specific files
-# =====================================
-local_settings.py
-db.sqlite3
-media/
-staticfiles/
-
-# =====================================
-# 🧬 Migrations (optional)
-# =====================================
-#**/migrations/*.py[cod]
-#!**/migrations/__init__.py
+!*.env.example     # Keep example env files for documentation
 
 # =====================================
 # 🧪 Testing tools and artifacts
@@ -85,6 +71,7 @@ pytest.ini
 # 🧹 Type checking and linting
 # =====================================
 .flake8
+pyproject.toml     # Ignore if not used in build context
 .mypy_cache/
 
 # =====================================
@@ -114,35 +101,9 @@ htmlcov/
 .DS_Store
 *.swp
 Thumbs.db
-*~
-
-# =====================================
-# 🐳 Docker / Docker Compose (dev use)
-# =====================================
-*.tar
-*.container
-.devcontainer/
-
-# =====================================
-# ⚙️ Project-specific configuration
-# =====================================
-database.ini
-!database.ini.example
 
 # =====================================
 # 🧪 Miscellaneous
 # =====================================
-.tox/
-__pypackages__/
-
-# =====================================
-# 📦 Other
-# =====================================
-**/secrets/
-**/Other/
-**/other/
-**/tsl_downloads/*.xml
-**/data_1/*.xml
-**/logs/*.csv
-**/requirements.txt
-**/requirements-dev.txt
+tsl_downloads/*
+!tsl_downloads/.gitkeep
