@@ -30,7 +30,7 @@ COPY requirements.in .
 
 # Upgrade pip, Install pip-tools, compile requirements.txt, and install dependencies
 # Uninstall pip-tools after build to reduce image size
-RUN pip install --no-cache-dir --upgrade pip pip-tools && \
+RUN python -m pip install --no-cache-dir --upgrade "pip<25.3" "pip-tools>=7.4,<7.6" && \
     pip-compile requirements.in && \
     pip install --no-cache-dir -r requirements.txt &&  \
     pip uninstall -y pip-tools

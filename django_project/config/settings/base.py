@@ -153,7 +153,7 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     "django_filters",
     # Local apps
-    "django_project.tsl_manager_app.apps.TslManagerAppConfig",
+    "tsl_manager_app.apps.TslManagerAppConfig",
 ]
 
 # ---------------------------------------------------------------------

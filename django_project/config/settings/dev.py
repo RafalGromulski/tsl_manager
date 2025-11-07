@@ -7,6 +7,8 @@ suitable for local development:
 - Debug mode enabled.
 """
 
+from pathlib import Path
+
 from .base import *  # noqa: F403, F401
 from .base import BASE_DIR
 
@@ -23,4 +25,4 @@ STATICFILES_DIRS = [BASE_DIR / "tsl_manager_app" / "static"]
 # ---------------------------------------------------------------------
 # CUSTOM PROJECT PATHS
 # ---------------------------------------------------------------------
-DATA_DIRECTORY = BASE_DIR / "send_to_db" / "data" / "data_1"
+DATA_DIRECTORY: Path = BASE_DIR / "send_to_db" / "data" / "data_1"

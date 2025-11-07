@@ -26,9 +26,7 @@ STATIC_ROOT = Path(env("STATIC_ROOT", default="/code/static"))
 # ---------------------------------------------------------------------
 # CUSTOM PROJECT PATHS
 # ---------------------------------------------------------------------
-DATA_DIRECTORY = Path(env("DATA_DIRECTORY", default="/code/tsl_downloads"))
-# DATA_DIRECTORY = Path("/code/tsl_downloads")
-
+DATA_DIRECTORY: Path = Path(env("DATA_DIRECTORY", default="/code/tsl_downloads"))
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 

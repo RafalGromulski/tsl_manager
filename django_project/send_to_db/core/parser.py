@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
 
-from constants import CA_QC_URI, COUNTRIES_EN
+from .constants import CA_QC_URI, COUNTRIES_EN
 
 logger = logging.getLogger(__name__)
 

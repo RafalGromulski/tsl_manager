@@ -1,13 +1,13 @@
-from typing import Any, Mapping, cast
+from pathlib import Path
+from typing import Any, Mapping, Protocol, cast
 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.views.generic import DetailView, TemplateView, UpdateView, View
-
-from django_project.config.settings.prod import DATA_DIRECTORY
 
 from .choices import CrlUrlStatus, ServiceStatus
 from .constants import COUNTRIES_PL
@@ -23,7 +23,7 @@ class GreetingView(TemplateView):
 
 
 class FilteredServiceListView(LoginRequiredMixin, View):
-    model = TspServiceInfo
+    model: type[TspServiceInfo] = TspServiceInfo
     template_name: str | None = None
     filter_kwargs: Mapping[str, Any] = {}
     order_by_fields: list[str] = []
@@ -65,7 +65,7 @@ class ProcessedServicesView(FilteredServiceListView):
     order_by_fields: list[str] = ["id", "country_name", "tsp_name"]
 
 
-class ServiceDetailsView(LoginRequiredMixin, DetailView[TspServiceInfo]):
+class ServiceDetailsView(LoginRequiredMixin, DetailView):
     model = TspServiceInfo
     template_name: str = "service_details.html"
     context_object_name: str = "tsp_service"
@@ -99,7 +99,7 @@ class ConfirmServiceView(LoginRequiredMixin, View):
         return redirect("new_services")
 
 
-class CrlUrlFormView(LoginRequiredMixin, UpdateView[TspServiceInfo, CrlUrlForm]):
+class CrlUrlFormView(LoginRequiredMixin, UpdateView):
     model = TspServiceInfo
     template_name: str = "crl_url_form_modal_content.html"
     form_class = CrlUrlForm
@@ -140,11 +140,18 @@ class TslStatusView(LoginRequiredMixin, TemplateView):
         return context
 
 
+class _SettingsWithDataDir(Protocol):
+    DATA_DIRECTORY: Path
+
+
 class UpdateServicesView(LoginRequiredMixin, View):
     template_name: str = "update_services_modal_content.html"
 
     def post(self, request: HttpRequest) -> HttpResponse:
-        parser = TslParser(DATA_DIRECTORY, COUNTRIES_PL)
+        _settings = cast(_SettingsWithDataDir, cast(object, settings))
+        data_dir: Path = _settings.DATA_DIRECTORY
+
+        parser = TslParser(data_dir, COUNTRIES_PL)
         parsed_services = parser.parse_all()
 
         updater = ServiceUpdater(parsed_services)

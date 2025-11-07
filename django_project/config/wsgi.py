@@ -8,8 +8,9 @@ it loads 'settings.production'; otherwise, it defaults to 'settings.development'
 It exposes the WSGI callable as a module-level variable named ``application``.
 """
 
-from config.env import configure_django_settings
 from django.core.wsgi import get_wsgi_application
+
+from .env import configure_django_settings
 
 configure_django_settings()
 

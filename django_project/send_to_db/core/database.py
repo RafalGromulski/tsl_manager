@@ -1,8 +1,9 @@
 import logging
 
 import asyncpg
-from send_to_db.config.config import load_config
-from send_to_db.core.parser import TSPService
+
+from ..config.config import load_config
+from .parser import TSPService
 
 logger = logging.getLogger(__name__)
 

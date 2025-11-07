@@ -12,17 +12,17 @@ skip-string-normalization = true
 [tool.isort]
 profile = "black"
 line_length = 120
-#known_first_party = ["config", "shop"]
 
 [tool.flake8]
 max-line-length = 120
 extend-ignore = ["E203", "W503"]
-per-file-ignores = ["django_project/config/settings/dev.py:F403,F405", "django_project/config/settings/prod.py:F403,F405"]
+per-file-ignores = ["config/settings/dev.py:F403,F405", "config/settings/prod.py:F403,F405"]
 exclude = ["migrations", ".venv", "venv"]
 
 [tool.mypy]
 python_version = "3.12"
 plugins = ["mypy_django_plugin.main"]
+mypy_path = ["."]
 #mypy_path = ["django_project"]
 disallow_untyped_defs = true
 check_untyped_defs = true
@@ -34,10 +34,10 @@ exclude = ["migrations"]
 explicit_package_bases = true
 
 [tool.django-stubs]
-django_settings_module = "django_project.config.settings.dev"
+django_settings_module = "config.settings.dev"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "django_project.config.settings.dev"
+DJANGO_SETTINGS_MODULE = "config.settings.dev"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 
 [tool.pip-tools]

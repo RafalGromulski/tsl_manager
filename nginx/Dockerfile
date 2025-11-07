@@ -4,7 +4,7 @@ FROM nginx:1.27-alpine
 # Prepare write directories (you'll give them tmpfs in runtime anyway, but let them exist)
 RUN mkdir -p /var/cache/nginx /var/run /tmp
 
-# Nadpisz główną konfigurację BEZ 'user' (wycisza warning)
+# Overwrite main configuration WITHOUT 'user' (silences warning)
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Copy the custom Nginx configuration file into the container
@@ -17,7 +17,7 @@ EXPOSE 8080
 
 STOPSIGNAL SIGQUIT
 
-# Uruchamiaj jako nie-root (zgodne z read_only + tmpfs w compose)
+# Run as non-root (compatible with read_only + tmpfs in compose)
 USER nginx
 
 # Start Nginx in the foreground

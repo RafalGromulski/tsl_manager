@@ -10,7 +10,7 @@ from celery.schedules import crontab
 
 beat_schedule: dict[str, dict[str, Any]] = {
     "run-tsl-task-every-2-hours": {
-        "task": "downloader.tasks.update_all_tsl_task",
+        "task": "tasks.update_all_tsl_task",
         "schedule": crontab(minute=0, hour="*/2"),
         "options": {"queue": "tsl"},
     },

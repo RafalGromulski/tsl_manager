@@ -1,9 +1,14 @@
+from typing import ClassVar
+
 from django.db import models
+from django.db.models.manager import Manager as DjangoManager
 
 from .choices import CrlUrlStatus, ServiceStatus, TspServiceStatus
 
 
 class TspServiceInfo(models.Model):
+    objects: ClassVar[DjangoManager["TspServiceInfo"]] = models.Manager()
+
     country_code = models.CharField(verbose_name="Country Code", max_length=2)
     country_name = models.CharField(verbose_name="Country", max_length=20)
     tsp_name = models.CharField(verbose_name="Service Provider", max_length=255)
@@ -28,6 +33,8 @@ class TspServiceInfo(models.Model):
 
 
 class TslValidityInfo(models.Model):
+    objects: ClassVar[DjangoManager["TslValidityInfo"]] = models.Manager()
+
     country_code = models.CharField(verbose_name="Country Code", max_length=2)
     country_name = models.CharField(verbose_name="Country", max_length=20)
     tsl_operator_name = models.CharField(verbose_name="TSL Operator", max_length=255)

@@ -1,4 +1,7 @@
 import logging
+from typing import Any
+
+from django.db.models import QuerySet
 
 from ..choices import CrlUrlStatus, ServiceStatus
 from ..models import TspServiceInfo
@@ -29,7 +32,7 @@ class ServiceUpdater:
             self._update_or_create_service(data)
 
     def _update_or_create_service(self, data: ParsedService) -> None:
-        existing_qs = TspServiceInfo.objects.filter(
+        existing_qs: QuerySet[TspServiceInfo] = TspServiceInfo.objects.filter(
             tsp_service_name=data.tsp_service_name,
             tsp_service_digital_id=data.tsp_service_digital_id,
         )
@@ -81,7 +84,7 @@ class ServiceUpdater:
         if not self._is_qc_ca(data):
             return
 
-        kwargs: dict[str, object] = {
+        kwargs: dict[str, Any] = {
             "country_code": data.country_code,
             "country_name": data.country_name,
             "tsp_name": data.tsp_name,
