@@ -1,6 +1,5 @@
 from celery import Celery
-
-from .celeryconfig import beat_schedule
+from celeryconfig import beat_schedule
 
 app = Celery(
     "main",

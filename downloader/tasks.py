@@ -1,8 +1,8 @@
 import logging
 import os
 
-from .celery_app import app
-from .main import LOGS_PATH, save_log, update_all_tsl_entries
+from celery_app import app
+from main import LOGS_PATH, save_log, update_all_tsl_entries
 
 
 @app.task
